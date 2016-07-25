@@ -1,0 +1,34 @@
+<head>
+  <link rel="stylesheet" href="/Content/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
+</head>
+<body>
+  <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
+  <h2>Here are all the jobs we recommend for you:</h2>
+  <h2>Update Your Information</h2>
+  <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
+    <input type="hidden" name="_method" value="PATCH">
+    <h2>First Name<input type="text" name="account-first-name" class="form-control"></h2>
+    <h2>Last Name<input type="text" name="account-last-name" class="form-control"></h2>
+    <h2>Email<input type="text" name="account-email" class="form-control"></h2>
+    <h2>Phone<input type="text" name="account-phone" class="form-control"></h2>
+    <h2>Education
+      <select class="form-control" name="account-education">
+        <option value="1">High School Degree</option>
+        <option value="2">Some College</option>
+        <option value="3">Associate's Degree</option>
+        <option value="4">Bachelor's Degree</option>
+        <option value="5">Master's Degree</option>
+        <option value="6">Ph.D</option>
+      </select>
+    </h2>
+    <h2>Resume<input type="text" name="account-resume" class="form-control"></h2>
+    <h2>Username<input type="text" name="account-username" class="form-control"></h2>
+    <h2>Password<input type="password" name="account-password" class="form-control"></h2>
+    <button type="submit" class="btn btn-success">Update Account</button>
+  </form>
+  <form class="form-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/deleted" method="post">
+    <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
+  </form>
+  <a href="/"><h1>Back Home</h1></a>
+</body>

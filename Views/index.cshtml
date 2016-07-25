@@ -10,6 +10,12 @@
     <input type="number" name="salary" value="">
     <button type="sumbit" name="button">Submit</button>
   </form>
-  
 
+  @foreach (var account in Model)
+  {
+    <a href="/accounts/@account.GetId()/@account.GetFirstName()"><h3>@account.GetFirstName() @account.GetLastName()</h3></a>
+  }
+  <a href="/accounts/new">Create A New Account</a>
+  <a href="/jobs/new">Create a New Job Post</a>
+  <a href="/jobs">View All Jobs</a>
 </body>
