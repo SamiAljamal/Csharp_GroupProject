@@ -8,10 +8,10 @@ namespace JobBoard
   {
     private string _title;
     private string _description;
-    private int _salary
+    private int _salary;
     private int _id;
 
-    public Job(string title, string description, int salaray, int id=0)
+    public Job(string title, string description, int salary, int id=0)
     {
       _title = title;
       _description = description;
@@ -66,7 +66,7 @@ namespace JobBoard
         bool titleEquality = this.GetTitle() == newJob.GetTitle();
         bool descriptionEquality = this.GetDescription()== newJob.GetDescription();
         bool salaryEquality = this.GetSalary()== newJob.GetSalary();
-        return (idEquality && nameEquality);
+        return (idEquality && titleEquality && descriptionEquality && salaryEquality);
       }
     }
 
@@ -184,12 +184,13 @@ namespace JobBoard
     public void Update(string newTitle, string newDescription, int newSalary)
     {
       SqlConnection conn = DB.Connection();
-      SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE Jobs SET name = @NewTitle OUTPUT INSERTED.name WHERE id = @JobId; UPDATE Jobs SET name = @NewDescription OUTPUT INSERTED.name WHERE id = @JobId; UPDATE Jobs SET name = @NewSalary OUTPUT INSERTED.name WHERE id = @JobId;", conn);
+      this.SetDescription(newDescription);
+      this.SetTitle(newTitle);
+      this.SetSalary(newSalary);
 
-
+      SqlCommand cmd = new SqlCommand("UPDATE jobs SET title = @NewTitle WHERE id = @JobId; UPDATE jobs SET description = @NewDescription WHERE id = @JobId; UPDATE jobs SET salary = @NewSalary WHERE id = @JobId;", conn);
 
       SqlParameter newTitleParameter = new SqlParameter();
       newTitleParameter.ParameterName = "@NewTitle";
@@ -198,29 +199,20 @@ namespace JobBoard
 
       SqlParameter newDescriptionParameter = new SqlParameter();
       newDescriptionParameter.ParameterName = "@NewDescription";
-      newDescriptionParameter.Value = newTitle;
+      newDescriptionParameter.Value = newDescription;
       cmd.Parameters.Add(newDescriptionParameter);
 
       SqlParameter newSalaryParameter = new SqlParameter();
       newSalaryParameter.ParameterName = "@NewSalary";
-      newSalaryParameter.Value = newTitle;
+      newSalaryParameter.Value = newSalary;
       cmd.Parameters.Add(newSalaryParameter);
 
       SqlParameter JobIdParameter = new SqlParameter();
       JobIdParameter.ParameterName = "@JobId";
       JobIdParameter.Value = this.GetId();
       cmd.Parameters.Add(JobIdParameter);
-      rdr = cmd.ExecuteReader();
 
-      while(rdr.Read())
-      {
-        this._name = rdr.GetString(0);
-      }
-
-      if (rdr != null)
-      {
-        rdr.Close();
-      }
+      cmd.ExecuteNonQuery();
 
       if (conn != null)
       {
