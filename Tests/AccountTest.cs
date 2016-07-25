@@ -59,5 +59,17 @@ namespace JobBoard
       testAccount.Update(testAccount.GetFirstName(), testLastName, testAccount.GetEmail(), testAccount.GetPhone(), 1, testAccount.GetResume());
       Assert.Equal(testLastName, testAccount.GetLastName());
     }
+
+    [Fact]
+    public void Test_Delete_DeletesAccountFromDatabase()
+    {
+      Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.");
+      testAccount.Save();
+      Account testAccount2 = new Account("Jane", "Roe", "janeroee@gmail.com", "971-555-5555", 2, "This is also my resume.");
+      testAccount2.Save();
+      List<Account> testAccounts = new List<Account> {testAccount2};
+      testAccount.DeleteOne();
+      Assert.Equal(testAccounts, Account.GetAll());
+    }
   }
 }

@@ -296,6 +296,26 @@ namespace JobBoard
       }
     }
 
+    public void DeleteOne()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM accounts WHERE id = @AccountId;", conn);
+
+      SqlParameter accountIdParameter = new SqlParameter();
+      accountIdParameter.ParameterName = "@AccountId";
+      accountIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(accountIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
      SqlConnection conn = DB.Connection();
