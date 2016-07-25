@@ -40,5 +40,24 @@ namespace JobBoard
       List<Account> resultAccounts = Account.GetAll();
       Assert.Equal(testAccount, resultAccounts[0]);
     }
+
+    [Fact]
+    public void Test_Find_ReturnsFoundAccount()
+    {
+      Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.");
+      testAccount.Save();
+      Account foundAccount = Account.Find(testAccount.GetId());
+      Assert.Equal(testAccount, foundAccount);
+    }
+
+    [Fact]
+    public void Test_Update_UpdatesAccountInDatabase()
+    {
+      Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.");
+      testAccount.Save();
+      string testLastName = "Jones";
+      testAccount.Update(testAccount.GetFirstName(), testLastName, testAccount.GetEmail(), testAccount.GetPhone(), 1, testAccount.GetResume());
+      Assert.Equal(testLastName, testAccount.GetLastName());
+    }
   }
 }

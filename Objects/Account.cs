@@ -191,6 +191,111 @@ namespace JobBoard
       }
     }
 
+    public static Account Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM accounts WHERE id = @AccountId;", conn);
+      SqlParameter accountIdParameter = new SqlParameter();
+      accountIdParameter.ParameterName = "@AccountId";
+      accountIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(accountIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      List<Account> foundAccounts = new List<Account>{};
+
+      while(rdr.Read())
+      {
+        int foundAccountId = rdr.GetInt32(0);
+        string foundAccountFirstName = rdr.GetString(1);
+        string foundAccountLastName = rdr.GetString(2);
+        string foundAccountEmail = rdr.GetString(3);
+        string foundAccountPhone = rdr.GetString(4);
+        int foundAccountEducation = rdr.GetInt32(5);
+        string foundAccountResume = rdr.GetString(6);
+        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountId);
+        foundAccounts.Add(foundAccount);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundAccounts[0];
+    }
+
+    public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE accounts SET first_name = @NewFirstName, last_name = @NewLastName, email = @NewEmail, phone = @NewPhone, education = @NewEducation, resume = @NewResume OUTPUT INSERTED.first_name, INSERTED.last_name, INSERTED.email, INSERTED.phone, INSERTED.education, INSERTED.resume WHERE id = @AccountId;", conn);
+
+      SqlParameter newFirstNameParameter = new SqlParameter();
+      newFirstNameParameter.ParameterName = "@NewFirstName";
+      newFirstNameParameter.Value = newFirstName;
+      cmd.Parameters.Add(newFirstNameParameter);
+
+      SqlParameter newLastNameParameter = new SqlParameter();
+      newLastNameParameter.ParameterName = "@NewLastName";
+      newLastNameParameter.Value = newLastName;
+      cmd.Parameters.Add(newLastNameParameter);
+
+      SqlParameter newEmailParameter = new SqlParameter();
+      newEmailParameter.ParameterName = "@NewEmail";
+      newEmailParameter.Value = newEmail;
+      cmd.Parameters.Add(newEmailParameter);
+
+      SqlParameter newPhoneParameter = new SqlParameter();
+      newPhoneParameter.ParameterName = "@NewPhone";
+      newPhoneParameter.Value = newPhone;
+      cmd.Parameters.Add(newPhoneParameter);
+
+      SqlParameter newEducationParameter = new SqlParameter();
+      newEducationParameter.ParameterName = "@NewEducation";
+      newEducationParameter.Value = newEducation;
+      cmd.Parameters.Add(newEducationParameter);
+
+      SqlParameter newResumeParameter = new SqlParameter();
+      newResumeParameter.ParameterName = "@NewResume";
+      newResumeParameter.Value = newResume;
+      cmd.Parameters.Add(newResumeParameter);
+
+      SqlParameter accountIdParameter = new SqlParameter();
+      accountIdParameter.ParameterName = "@AccountId";
+      accountIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(accountIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._firstName = rdr.GetString(0);
+        this._lastName = rdr.GetString(1);
+        this._email = rdr.GetString(2);
+        this._phone = rdr.GetString(3);
+        this._education = rdr.GetInt32(4);
+        this._resume = rdr.GetString(5);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
      SqlConnection conn = DB.Connection();
