@@ -284,5 +284,70 @@ namespace JobBoard
 
       return items;
     }
+    public void SaveWords()
+    {
+      Dictionary<string, int> newDictionary = this.UniqueWordCount();
+      foreach(KeyValuePair<string, int> pair in newDictionary)
+      {
+        SqlConnection conn = DB.Connection();
+        SqlDataReader rdr = null;
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand ("SELECT * FROM keywords WHERE word = @Keyword;", conn);
+
+        SqlParameter keywordParameter = new SqlParameter();
+        keywordParameter.ParameterName = "@Keyword";
+        keywordParameter.Value = pair.Key;
+        cmd.Parameters.Add(keywordParameter);
+        rdr = cmd.ExecuteReader();
+
+        int foundKeywordId = -1;
+
+        while(rdr.Read())
+        {
+          foundKeywordId = rdr.GetInt32(0);
+        }
+        if (rdr != null) rdr.Close();
+        if(foundKeywordId==-1)
+        {
+          SqlDataReader rdr2 = null;
+          SqlCommand cmd2 = new SqlCommand("INSERT INTO keywords (word) OUTPUT INSERTED.id VALUES (@Keyword);", conn);
+
+          SqlParameter keywordParameter2 = new SqlParameter();
+          keywordParameter2.ParameterName = "@Keyword";
+          keywordParameter2.Value = pair.Key;
+          cmd2.Parameters.Add(keywordParameter2);
+
+          rdr2 = cmd2.ExecuteReader();
+
+          while(rdr2.Read())
+          {
+            foundKeywordId = rdr2.GetInt32(0);
+          }
+          if (rdr2 != null) rdr2.Close();
+        }
+        SqlCommand cmd3 = new SqlCommand("INSERT INTO jobs_keywords (job_id, keyword_id, number_of_repeats) VALUES (@JobId, @KeywordId, @Repeats);", conn);
+
+        SqlParameter idParameter = new SqlParameter();
+        idParameter.ParameterName = "@JobId";
+        idParameter.Value = this.GetId();
+
+        SqlParameter keywordIdParameter = new SqlParameter();
+        keywordIdParameter.ParameterName = "@KeywordId";
+        keywordIdParameter.Value = foundKeywordId;
+
+        SqlParameter repeatsParameter = new SqlParameter();
+        repeatsParameter.ParameterName = "@Repeats";
+        repeatsParameter.Value = pair.Value;
+
+        cmd3.Parameters.Add(keywordIdParameter);
+        cmd3.Parameters.Add(idParameter);
+        cmd3.Parameters.Add(repeatsParameter);
+
+        cmd3.ExecuteNonQuery();
+
+        if (conn != null) conn.Close();
+      }
+    }
   }
 }
