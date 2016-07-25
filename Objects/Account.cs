@@ -14,7 +14,7 @@ namespace JobBoard
     private int _education;
     private string _resume;
 
-    public Account (string firstName, string lastName, string email, string phone, int education, string resume, int id)
+    public Account (string firstName, string lastName, string email, string phone, int education, string resume, int id = 0)
     {
       _id = id;
       _firstName = firstName;
@@ -134,6 +134,61 @@ namespace JobBoard
         conn.Close();
       }
       return allAccounts;
+    }
+
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO accounts (first_name, last_name, email, phone, education, resume) OUTPUT INSERTED.id VALUES (@FirstName, @LastName, @Email, @Phone, @Education, @Resume);", conn);
+
+      SqlParameter firstNameParameter = new SqlParameter();
+      firstNameParameter.ParameterName = "@FirstName";
+      firstNameParameter.Value = this.GetFirstName();
+      cmd.Parameters.Add(firstNameParameter);
+
+      SqlParameter lastNameParameter = new SqlParameter();
+      lastNameParameter.ParameterName = "@LastName";
+      lastNameParameter.Value = this.GetLastName();
+      cmd.Parameters.Add(lastNameParameter);
+
+      SqlParameter emailParameter = new SqlParameter();
+      emailParameter.ParameterName = "@Email";
+      emailParameter.Value = this.GetEmail();
+      cmd.Parameters.Add(emailParameter);
+
+      SqlParameter phoneParameter = new SqlParameter();
+      phoneParameter.ParameterName = "@Phone";
+      phoneParameter.Value = this.GetPhone();
+      cmd.Parameters.Add(phoneParameter);
+
+      SqlParameter educationParameter = new SqlParameter();
+      educationParameter.ParameterName = "@Education";
+      educationParameter.Value = this.GetEducation();
+      cmd.Parameters.Add(educationParameter);
+
+      SqlParameter resumeParameter = new SqlParameter();
+      resumeParameter.ParameterName = "@Resume";
+      resumeParameter.Value = this.GetResume();
+      cmd.Parameters.Add(resumeParameter);
+
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }
