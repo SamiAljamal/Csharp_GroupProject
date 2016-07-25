@@ -10,7 +10,7 @@
     <input type="hidden" name="_method" value="PATCH">
     <h2>Title<input type="text" name="job-title" class="form-control"></h2>
     <h2>Description<input type="text" name="job-description" class="form-control"></h2>
-    <h2>Salary<input type="text" name="job-salary" class="form-control"></h2>
+    <h2>Salary<input type="number" name="job-salary" class="form-control"></h2>
     <button type="submit" class="btn btn-success">Update Job</button>
   </form>
   <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/deleted" method="post">

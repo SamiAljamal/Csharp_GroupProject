@@ -67,7 +67,6 @@ namespace JobBoard
       //Assert
       Assert.Equal(testJob, foundJob);
     }
-
     [Fact]
     public void Test_Update_UpdatesJobInDatabase()
     {

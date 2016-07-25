@@ -188,6 +188,17 @@ namespace JobBoard
       SqlConnection conn = DB.Connection();
       conn.Open();
 
+
+      if (newTitle == null)
+      {
+        newTitle = this.GetTitle();
+      }
+      if (newDescription == null)
+      {
+        newDescription = this.GetDescription();
+      }
+
+
       this.SetDescription(newDescription);
       this.SetTitle(newTitle);
       this.SetSalary(newSalary);
