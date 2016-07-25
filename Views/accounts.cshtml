@@ -1,0 +1,14 @@
+<head>
+  <link rel="stylesheet" href="/Content/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
+</head>
+<body>
+  <h1>List of All Accounts</h1>
+  @foreach (var account in Model)
+  {
+    <ul>
+      <li>@account.GetFirstName() @account.GetLastName()</li>
+    </ul>
+  }
+  <a href="/"><h1>Back Home</h1></a>
+</body>
