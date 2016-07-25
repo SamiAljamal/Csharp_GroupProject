@@ -44,8 +44,34 @@ namespace JobBoard
         selectedAccount.DeleteOne();
         return View ["deleted_account.cshtml", selectedAccount];
       };
-      Get ["/jobs"] = _ => {
-        return View ["jobs.cshtml"];
+      Post ["/jobs"] = _ => {
+        Job newJob = new Job
+        (
+          Request.Form ["job-title"],
+          Request.Form ["job-description"],
+          Request.Form ["job-salary"]
+        );
+        newJob.Save();
+        return View ["jobs.cshtml", Job.GetAll()];
+      };
+      Get ["/jobs/{id}/{title}"] = parameters => {
+        Job selectedJob = Job.Find(parameters.id);
+        return View ["job.cshtml", selectedJob];
+      };
+      Patch ["/jobs/{id}/{title}/updated"] = parameters => {
+        Job selectedJob = Job.Find(parameters.id);
+        selectedJob.Update
+        (
+          Request.Form ["job-title"],
+          Request.Form ["job-description"],
+          Request.Form ["job-salary"]
+        );
+        return View ["job.cshtml", selectedJob];
+      };
+      Post ["/jobs/{id}/{title}/deleted"] = parameters => {
+        Job selectedJob = Job.Find(parameters.id);
+        selectedJob.DeleteOne();
+        return View ["deleted_job.cshtml", selectedJob];
       };
     }
   }
