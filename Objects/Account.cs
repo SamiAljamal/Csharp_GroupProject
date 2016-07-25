@@ -13,8 +13,10 @@ namespace JobBoard
     private string _phone;
     private int _education;
     private string _resume;
+    private string _username;
+    private string _password;
 
-    public Account (string firstName, string lastName, string email, string phone, int education, string resume, int id = 0)
+    public Account (string firstName, string lastName, string email, string phone, int education, string resume, string username, string password, int id = 0)
     {
       _id = id;
       _firstName = firstName;
@@ -23,6 +25,8 @@ namespace JobBoard
       _phone = phone;
       _education = education;
       _resume = resume;
+      _username = username;
+      _password = password;
     }
 
     public override bool Equals(System.Object otherAccount)
@@ -41,7 +45,9 @@ namespace JobBoard
         bool phoneEquality = this.GetPhone() == newAccount.GetPhone();
         bool educationEquality = this.GetEducation() == newAccount.GetEducation();
         bool resumeEquality = this.GetResume() == newAccount.GetResume();
-        return (idEquality && firstNameEquality && lastNameEquality && emailEquality && phoneEquality && educationEquality && resumeEquality);
+        bool usernameEquality = this.GetUsername() == newAccount.GetUsername();
+        bool passwordEquality = this.GetPassword() == newAccount.GetPassword();
+        return (idEquality && firstNameEquality && lastNameEquality && emailEquality && phoneEquality && educationEquality && resumeEquality && usernameEquality && passwordEquality);
       }
     }
 
@@ -74,6 +80,14 @@ namespace JobBoard
     {
       return _resume;
     }
+    public string GetUsername()
+    {
+      return _username;
+    }
+    public string GetPassword()
+    {
+      return _password;
+    }
 
     public void SetFirstName(string newFirstName)
     {
@@ -99,6 +113,14 @@ namespace JobBoard
     {
       _resume = newResume;
     }
+    public void SetUsername(string newUsername)
+    {
+      _username = newUsername;
+    }
+    public void SetPassword(string newPassword)
+    {
+      _password = newPassword;
+    }
 
     public static List<Account> GetAll()
     {
@@ -120,8 +142,10 @@ namespace JobBoard
         string accountPhone = rdr.GetString(4);
         int accountEducation = rdr.GetInt32(5);
         string accountResume = rdr.GetString(6);
+        string accountUsername = rdr.GetString(7);
+        string accountPassword = rdr.GetString(8);
 
-        Account newAccount = new Account(accountFirstName, accountLastName, accountEmail, accountPhone, accountEducation, accountResume, accountId);
+        Account newAccount = new Account(accountFirstName, accountLastName, accountEmail, accountPhone, accountEducation, accountResume, accountUsername, accountPassword, accountId);
         allAccounts.Add(newAccount);
       }
 
@@ -142,7 +166,7 @@ namespace JobBoard
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO accounts (first_name, last_name, email, phone, education, resume) OUTPUT INSERTED.id VALUES (@FirstName, @LastName, @Email, @Phone, @Education, @Resume);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO accounts (first_name, last_name, email, phone, education, resume, username, password) OUTPUT INSERTED.id VALUES (@FirstName, @LastName, @Email, @Phone, @Education, @Resume, @Username, @Password);", conn);
 
       SqlParameter firstNameParameter = new SqlParameter();
       firstNameParameter.ParameterName = "@FirstName";
@@ -173,6 +197,16 @@ namespace JobBoard
       resumeParameter.ParameterName = "@Resume";
       resumeParameter.Value = this.GetResume();
       cmd.Parameters.Add(resumeParameter);
+
+      SqlParameter usernameParameter = new SqlParameter();
+      usernameParameter.ParameterName = "@Username";
+      usernameParameter.Value = this.GetUsername();
+      cmd.Parameters.Add(usernameParameter);
+
+      SqlParameter passwordParameter = new SqlParameter();
+      passwordParameter.ParameterName = "@Password";
+      passwordParameter.Value = this.GetPassword();
+      cmd.Parameters.Add(passwordParameter);
 
 
       rdr = cmd.ExecuteReader();
@@ -215,7 +249,9 @@ namespace JobBoard
         string foundAccountPhone = rdr.GetString(4);
         int foundAccountEducation = rdr.GetInt32(5);
         string foundAccountResume = rdr.GetString(6);
-        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountId);
+        string foundAccountUsername = rdr.GetString(7);
+        string foundAccountPassword = rdr.GetString(8);
+        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountUsername, foundAccountPassword, foundAccountId);
         foundAccounts.Add(foundAccount);
       }
 
@@ -230,13 +266,13 @@ namespace JobBoard
       return foundAccounts[0];
     }
 
-    public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume)
+    public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume, string newUsername, string newPassword)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE accounts SET first_name = @NewFirstName, last_name = @NewLastName, email = @NewEmail, phone = @NewPhone, education = @NewEducation, resume = @NewResume OUTPUT INSERTED.first_name, INSERTED.last_name, INSERTED.email, INSERTED.phone, INSERTED.education, INSERTED.resume WHERE id = @AccountId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE accounts SET first_name = @NewFirstName, last_name = @NewLastName, email = @NewEmail, phone = @NewPhone, education = @NewEducation, resume = @NewResume, username = @NewUsername, password = @NewPassword OUTPUT INSERTED.first_name, INSERTED.last_name, INSERTED.email, INSERTED.phone, INSERTED.education, INSERTED.resume, INSERTED.username, INSERTED.password WHERE id = @AccountId;", conn);
 
       SqlParameter newFirstNameParameter = new SqlParameter();
       newFirstNameParameter.ParameterName = "@NewFirstName";
@@ -268,6 +304,16 @@ namespace JobBoard
       newResumeParameter.Value = newResume;
       cmd.Parameters.Add(newResumeParameter);
 
+      SqlParameter newUsernameParameter = new SqlParameter();
+      newUsernameParameter.ParameterName = "@NewUsername";
+      newUsernameParameter.Value = newUsername;
+      cmd.Parameters.Add(newUsernameParameter);
+
+      SqlParameter newPasswordParameter = new SqlParameter();
+      newPasswordParameter.ParameterName = "@NewPassword";
+      newPasswordParameter.Value = newPassword;
+      cmd.Parameters.Add(newPasswordParameter);
+
       SqlParameter accountIdParameter = new SqlParameter();
       accountIdParameter.ParameterName = "@AccountId";
       accountIdParameter.Value = this.GetId();
@@ -283,6 +329,8 @@ namespace JobBoard
         this._phone = rdr.GetString(3);
         this._education = rdr.GetInt32(4);
         this._resume = rdr.GetString(5);
+        this._username = rdr.GetString(6);
+        this._password = rdr.GetString(7);
       }
 
       if (rdr != null)
