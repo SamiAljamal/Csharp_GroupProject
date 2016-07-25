@@ -115,7 +115,7 @@ namespace JobBoard
     public void Test_UniqueWordCount_HandlesPunctuationSensibly()
     {
 
-      Job testJob = new Job("Job", "A: cool; job, for a) Cool! Person. what? a job", 45000);
+      Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000);
       testJob.Save();
 
       Dictionary<string, int> result = testJob.UniqueWordCount();

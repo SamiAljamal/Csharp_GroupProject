@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace JobBoard
 {
@@ -250,24 +251,33 @@ namespace JobBoard
     public Dictionary<string, int> UniqueWordCount()
     {
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
-      string jobDescription = this.GetDescription().ToLower();
-      string trimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
-      string[] wordList = trimmedJobDescription.Split(' ');
-      for(int i=0; i < wordList.Length; i++)
+      string jobDescription = this.GetDescription().ToLower() + " ";
+      string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+      string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
+      Regex whitespace = new Regex(@"\s+");
+      string[] wordList = whitespace.Split(trimmedJobDescription);
+      for(int i=0; i < wordList.Length-1; i++)
       {
         string trimedWordOne = wordList[i];
 
         int count=0;
         if(!UniqueWords.ContainsKey(wordList[i]))
         {
-          for(int j = i; j < wordList.Length; j++)
+          for(int j = i; j < wordList.Length-1; j++)
           {
             if(wordList[i]==wordList[j]) count+=1;
           }
           UniqueWords.Add(wordList[i], count);
         }
       }
-      return UniqueWords;
+      Dictionary<string, int> items = new Dictionary<string, int>();
+      var sorted = from pair in UniqueWords orderby pair.Value descending select pair;
+      foreach (KeyValuePair<string, int> pair in sorted)
+      {
+        items.Add(pair.Key, pair.Value);
+      }
+
+      return items;
     }
   }
 }
