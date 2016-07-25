@@ -14,7 +14,14 @@ namespace JobBoard
     }
     public void Dispose()
     {
-      Account.DeleteAll();
+      // Account.DeleteAll();
+    }
+
+    [Fact]
+    public void Test_GetAll_ReturnsZeroWhenDatabaseEmpty()
+    {
+      List<Account> testList = Account.GetAll();
+      Assert.Equal(0, testList.Count);
     }
   }
 }
