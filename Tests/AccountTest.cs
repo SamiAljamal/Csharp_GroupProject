@@ -14,7 +14,7 @@ namespace JobBoard
     }
     public void Dispose()
     {
-      // Account.DeleteAll();
+      Account.DeleteAll();
     }
 
     [Fact]
