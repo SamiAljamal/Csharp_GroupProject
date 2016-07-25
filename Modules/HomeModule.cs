@@ -39,6 +39,11 @@ namespace JobBoard
         );
         return View ["account.cshtml", selectedAccount];
       };
+      Post ["/accounts/{id}/{first_name}/deleted"] = parameters => {
+        Account selectedAccount = Account.Find(parameters.id);
+        selectedAccount.DeleteOne();
+        return View ["deleted_account.cshtml", selectedAccount];
+      };
       Get ["/jobs"] = _ => {
         return View ["jobs.cshtml"];
       };
