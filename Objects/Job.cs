@@ -250,6 +250,8 @@ namespace JobBoard
 
     public Dictionary<string, int> UniqueWordCount()
     {
+      List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
       string jobDescription = this.GetDescription().ToLower() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
@@ -258,16 +260,19 @@ namespace JobBoard
       string[] wordList = whitespace.Split(trimmedJobDescription);
       for(int i=0; i < wordList.Length-1; i++)
       {
-        string trimedWordOne = wordList[i];
-
-        int count=0;
-        if(!UniqueWords.ContainsKey(wordList[i]))
+        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
         {
-          for(int j = i; j < wordList.Length-1; j++)
+          string trimedWordOne = wordList[i];
+
+          int count=0;
+          if(!UniqueWords.ContainsKey(wordList[i]))
           {
-            if(wordList[i]==wordList[j]) count+=1;
+            for(int j = i; j < wordList.Length-1; j++)
+            {
+              if(wordList[i]==wordList[j]) count+=1;
+            }
+            UniqueWords.Add(wordList[i], count);
           }
-          UniqueWords.Add(wordList[i], count);
         }
       }
       Dictionary<string, int> items = new Dictionary<string, int>();
