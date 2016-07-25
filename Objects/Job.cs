@@ -13,7 +13,7 @@ namespace JobBoard
     private int _salary;
     private int _id;
 
-    public Job(string title, string description, int salary, int id=0)
+    public Job(string title, string description, int salary, int id = 0)
     {
       _title = title;
       _description = description;
