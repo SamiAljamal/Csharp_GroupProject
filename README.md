@@ -59,7 +59,9 @@ No known bugs.
 
 The program should ... | Example Input | Example Output
 ----- | ----- | -----
---- | --- | ---
+Have CRUD functionality for an account | --- | ---
+Have CRUD functionality for a job listing | --- | ---
+Create a keywords list with the most common words used in a job description | --- | ---
 
 ## Future Features
 
