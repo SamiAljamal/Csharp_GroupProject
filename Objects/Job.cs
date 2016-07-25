@@ -349,5 +349,49 @@ namespace JobBoard
         if (conn != null) conn.Close();
       }
     }
+
+    public static List<Job> SearchJobsbyKeyword(string searchterm)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keyword.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) where keywords.word = @keyword", conn);
+
+      SqlParameter keywordParameter = new SqlParameter();
+      keywordParameter.ParameterName = "@keyword";
+      keywordParameter.Value = searchterm;
+      cmd.Parameters.Add(keywordParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundJobId = 0;
+      string foundJobName = null;
+      string foundJobDescription = null;
+      int foundJobSalary=0;
+
+      List<Job> searchJob = new List<Job>{};
+      while(rdr.Read())
+      {
+        foundJobId = rdr.GetInt32(0);
+        foundJobName = rdr.GetString(1);
+        foundJobDescription = rdr.GetString(2);
+        foundJobSalary = rdr.GetInt32(3);
+
+        Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundJobId);
+        searchJob.Add(foundJob);
+      }
+
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return searchJob;
+
+    }
   }
 }
