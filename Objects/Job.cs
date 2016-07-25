@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace JobBoard
 {
@@ -244,6 +245,29 @@ namespace JobBoard
       conn.Open();
       SqlCommand cmd = new SqlCommand("DELETE FROM jobs;", conn);
       cmd.ExecuteNonQuery();
+    }
+
+    public Dictionary<string, int> UniqueWordCount()
+    {
+      Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
+      string jobDescription = this.GetDescription().ToLower();
+      string trimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+      string[] wordList = trimmedJobDescription.Split(' ');
+      for(int i=0; i < wordList.Length; i++)
+      {
+        string trimedWordOne = wordList[i];
+
+        int count=0;
+        if(!UniqueWords.ContainsKey(wordList[i]))
+        {
+          for(int j = i; j < wordList.Length; j++)
+          {
+            if(wordList[i]==wordList[j]) count+=1;
+          }
+          UniqueWords.Add(wordList[i], count);
+        }
+      }
+      return UniqueWords;
     }
   }
 }

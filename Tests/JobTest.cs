@@ -97,6 +97,34 @@ namespace JobBoard
       Assert.Equal(allcourses, Job.GetAll());
     }
 
+    [Fact]
+    public void Test_UniqueWordCount_ReturnsDictionaryWithWordsAndCounts()
+    {
+
+      Job testJob = new Job("Job", "A cool job for a Cool Person what a job", 45000);
+      testJob.Save();
+
+      Dictionary<string, int> result = testJob.UniqueWordCount();
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"a", 3}, {"cool", 2}, {"job", 2}, {"for", 1}, {"person", 1}, {"what", 1}};
+
+      //Assert
+      Assert.Equal(expectedResult, result);
+    }
+
+    [Fact]
+    public void Test_UniqueWordCount_HandlesPunctuationSensibly()
+    {
+
+      Job testJob = new Job("Job", "A: cool; job, for a) Cool! Person. what? a job", 45000);
+      testJob.Save();
+
+      Dictionary<string, int> result = testJob.UniqueWordCount();
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"a", 3}, {"cool", 2}, {"job", 2}, {"for", 1}, {"person", 1}, {"what", 1}};
+
+      //Assert
+      Assert.Equal(expectedResult, result);
+    }
+
     public void Dispose()
     {
       Job.DeleteAll();
