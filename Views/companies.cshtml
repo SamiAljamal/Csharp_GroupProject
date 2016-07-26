@@ -1,0 +1,14 @@
+<head>
+  <link rel="stylesheet" href="/Content/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
+</head>
+<body>
+  <h1>List of All Companies</h1>
+  @foreach (var company in Model)
+  {
+    <ul>
+      <li><a href="/companies/@company.GetId()/@company.GetName()">@company.GetName()</a></li>
+    </ul>
+  }
+  <a href="/"><h1>Back Home</h1></a>
+</body>

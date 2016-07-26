@@ -1,4 +1,5 @@
 using Nancy;
+using System.Collections.Generic;
 
 namespace JobBoard
 {
@@ -8,7 +9,6 @@ namespace JobBoard
     {
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
-      Get ["/jobs/new"] = _ => View ["job_form.cshtml"];
 
       Get ["/accounts"] = _ => {
         return View ["accounts.cshtml", Account.GetAll()];
@@ -31,7 +31,7 @@ namespace JobBoard
       };
 
       Post["/keyword"]=_=>{
-        Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], Request.Form["company-id"], Request.Form["category-id"]);
+        Job newJob = new Job(Request.Form["title"], Request.Form["description"], Request.Form["salary"], Request.Form["company-id"], Request.Form["category-id"]);
         newJob.Save();
         return View["result.cshtml", newJob];
       };
@@ -63,12 +63,24 @@ namespace JobBoard
       Get ["/jobs"] = _ => {
         return View ["jobs.cshtml", Job.GetAll()];
       };
+
+      Get ["/jobs/new"] = _ =>{
+        Dictionary<string, object> model = new   Dictionary<string, object> {};
+        List<Company> allCompanies = Company.GetAll();
+        List<Category> allCategories = Category.GetAll();
+        model.Add("allCompanies", allCompanies);
+        model.Add("allCategories", allCategories);
+        return View ["job_form.cshtml", model];
+      };
+
       Post ["/jobs"] = _ => {
         Job newJob = new Job
         (
           Request.Form ["job-title"],
           Request.Form ["job-description"],
-          Request.Form ["job-salary"]
+          Request.Form ["job-salary"],
+          Request.Form ["company-id"],
+          Request.Form ["category-id"]
         );
         newJob.Save();
         return View ["jobs.cshtml", Job.GetAll()];
@@ -83,7 +95,9 @@ namespace JobBoard
         (
           Request.Form ["job-title"],
           Request.Form ["job-description"],
-          Request.Form ["job-salary"]
+          Request.Form ["job-salary"],
+          Request.Form ["company-id"],
+          Request.Form ["category-id"]
         );
         return View ["job.cshtml", selectedJob];
       };
@@ -91,6 +105,27 @@ namespace JobBoard
         Job selectedJob = Job.Find(parameters.id);
         selectedJob.Delete();
         return View ["deleted_job.cshtml", selectedJob];
+      };
+
+      Get ["/companies"] = _ => {
+        return View ["companies.cshtml", Company.GetAll()];
+      };
+      Get ["/companies/new"] = _ => View ["company_form.cshtml"];
+
+      Post["/companies"]=_=> {
+        Company newCompany = new Company(Request.Form["company-name"]);
+        newCompany.Save();
+        return View ["companies.cshtml", Company.GetAll()];
+      };
+
+      Get ["/categories"] = _ => {
+        return View ["categories.cshtml", Category.GetAll()];
+      };
+      Get ["/categories/new"] = _ => View ["category_form.cshtml"];
+      Post ["/categories"] = _ => {
+        Category newCategory = new Category(Request.Form["category-name"]);
+        newCategory.Save();
+        return View ["categories.cshtml", Category.GetAll()];
       };
     }
   }

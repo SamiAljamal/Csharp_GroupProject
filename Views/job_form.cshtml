@@ -3,12 +3,33 @@
   <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
 </head>
 <body>
-  <h1>Create a New Job Listing</h1>
-  <form class="from-group" action="/jobs" method="post">
-    <h2>Title<input type="text" name="job-title" class="form-control"></h2>
-    <h2>Description<input type="text" name="job-description" class="form-control"></h2>
-    <h2>Salary<input type="text" name="job-salary" class="form-control"></h2>
-    <button type="btn" class="btn btn-success">Create Job</button>
-  </form>
+  @if(Model["allCompanies"].Count >0 && Model["allCategories"].Count >0)
+  {
+    <h1>Create a New Job Listing</h1>
+    <form class="from-group" action="/jobs" method="post">
+      <h2>Title<input type="text" name="job-title" class="form-control"></h2>
+      <h2>Description<input type="text" name="job-description" class="form-control"></h2>
+      <h2>Salary<input type="text" name="job-salary" class="form-control"></h2>
+      <select name="company">
+        @foreach(var company in Model["allCompanies"])
+        {
+          <option value=@company.GetId()>@company.GetName()</option>
+        }
+      </select>
+      <select name="category">
+        @foreach(var category in Model["allCategories"])
+        {
+          <option value=@category.GetId()>@category.GetName()</option>
+        }
+      </select>
+      <button type="btn" class="btn btn-success">Create Job</button>
+    </form>
+  }
+  else
+  {
+    <p>
+      Sorry but either no companies or no categories have been added yet and that must be done before jobs can be posted.
+    </p>
+  }
   <a href="/"><h1>Back Home</h1></a>
 </body>
