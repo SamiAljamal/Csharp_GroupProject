@@ -327,5 +327,37 @@ namespace JobBoard
       }
       return rankedWords;
     }
+    public List<Company> GetCompanies()
+    {
+      List<Company> allCompanies = new List<Company> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand ("SELECT companies.* FROM categories JOIN jobs ON (categories.id = jobs.category_id) JOIN companies ON (companies.id = jobs.company_id) WHERE categories.id = @CategoryId;", conn);
+
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(categoryIdParameter);
+      rdr = cmd.ExecuteReader();
+      while (rdr.Read())
+      {
+        int companyId = rdr.GetInt32(0);
+        string companyName = rdr.GetString(1);
+        Company newCompany = new Company (companyName, companyId);
+        allCompanies.Add(newCompany);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allCompanies;
+    }
   }
 }

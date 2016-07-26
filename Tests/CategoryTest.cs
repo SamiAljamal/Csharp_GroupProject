@@ -147,6 +147,26 @@ namespace JobBoard
       Dictionary<string, int> resultWords = newCategory.GetPopularWords(5);
       Assert.Equal(expectedWords, resultWords);
     }
+    [Fact]
+    public void Test_GetCompanies_ReturnsAllCompaniesByCategory()
+    {
+      Category newCategory = new Category("Category");
+      newCategory.Save();
+
+      Company firstCompany = new Company("Company");
+      Company secondCompany = new Company("Company2");
+      firstCompany.Save();
+      secondCompany.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job. Apply now!", 46000, firstCompany.GetId(), newCategory.GetId());
+      newJob.Save();
+      newJob.SaveWords();
+
+      List<Company> testCompanyList = new List<Company> {firstCompany};
+      List<Company> resultCompanyList = newCategory.GetCompanies();
+
+      Assert.Equal(testCompanyList, resultCompanyList);
+    }
     public void Dispose()
     {
       Category.DeleteAll();
