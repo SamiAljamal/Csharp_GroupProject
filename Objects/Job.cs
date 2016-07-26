@@ -273,9 +273,6 @@ namespace JobBoard
 
       Dictionary<string, int> items = new Dictionary<string, int>();
 
-
-      // Make logic to join words that are capitalized and NOT separated by punctuation, add them to a dictionary, and then remove them from the original string.
-
       for(int i=0; i < wordList.Length-1; i++)
       {
         if(!prepositions.Contains(wordList[i].ToLower()) && !commonWords.Contains(wordList[i].ToLower()))
