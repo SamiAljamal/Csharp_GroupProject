@@ -261,6 +261,8 @@ namespace JobBoard
 
     public Dictionary<string, int> UniqueWordCount()
     {
+      List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
       string jobDescription = this.GetDescription().ToLower() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
@@ -269,16 +271,19 @@ namespace JobBoard
       string[] wordList = whitespace.Split(trimmedJobDescription);
       for(int i=0; i < wordList.Length-1; i++)
       {
-        string trimedWordOne = wordList[i];
-
-        int count=0;
-        if(!UniqueWords.ContainsKey(wordList[i]))
+        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
         {
-          for(int j = i; j < wordList.Length-1; j++)
+          string trimedWordOne = wordList[i];
+
+          int count=0;
+          if(!UniqueWords.ContainsKey(wordList[i]))
           {
-            if(wordList[i]==wordList[j]) count+=1;
+            for(int j = i; j < wordList.Length-1; j++)
+            {
+              if(wordList[i]==wordList[j]) count+=1;
+            }
+            UniqueWords.Add(wordList[i], count);
           }
-          UniqueWords.Add(wordList[i], count);
         }
       }
       Dictionary<string, int> items = new Dictionary<string, int>();
@@ -289,6 +294,115 @@ namespace JobBoard
       }
 
       return items;
+    }
+    public void SaveWords()
+    {
+      Dictionary<string, int> newDictionary = this.UniqueWordCount();
+      foreach(KeyValuePair<string, int> pair in newDictionary)
+      {
+        SqlConnection conn = DB.Connection();
+        SqlDataReader rdr = null;
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand ("SELECT * FROM keywords WHERE word = @Keyword;", conn);
+
+        SqlParameter keywordParameter = new SqlParameter();
+        keywordParameter.ParameterName = "@Keyword";
+        keywordParameter.Value = pair.Key;
+        cmd.Parameters.Add(keywordParameter);
+        rdr = cmd.ExecuteReader();
+
+        int foundKeywordId = -1;
+
+        while(rdr.Read())
+        {
+          foundKeywordId = rdr.GetInt32(0);
+        }
+        if (rdr != null) rdr.Close();
+        if(foundKeywordId==-1)
+        {
+          SqlDataReader rdr2 = null;
+          SqlCommand cmd2 = new SqlCommand("INSERT INTO keywords (word) OUTPUT INSERTED.id VALUES (@Keyword);", conn);
+
+          SqlParameter keywordParameter2 = new SqlParameter();
+          keywordParameter2.ParameterName = "@Keyword";
+          keywordParameter2.Value = pair.Key;
+          cmd2.Parameters.Add(keywordParameter2);
+
+          rdr2 = cmd2.ExecuteReader();
+
+          while(rdr2.Read())
+          {
+            foundKeywordId = rdr2.GetInt32(0);
+          }
+          if (rdr2 != null) rdr2.Close();
+        }
+        SqlCommand cmd3 = new SqlCommand("INSERT INTO jobs_keywords (job_id, keyword_id, number_of_repeats) VALUES (@JobId, @KeywordId, @Repeats);", conn);
+
+        SqlParameter idParameter = new SqlParameter();
+        idParameter.ParameterName = "@JobId";
+        idParameter.Value = this.GetId();
+
+        SqlParameter keywordIdParameter = new SqlParameter();
+        keywordIdParameter.ParameterName = "@KeywordId";
+        keywordIdParameter.Value = foundKeywordId;
+
+        SqlParameter repeatsParameter = new SqlParameter();
+        repeatsParameter.ParameterName = "@Repeats";
+        repeatsParameter.Value = pair.Value;
+
+        cmd3.Parameters.Add(keywordIdParameter);
+        cmd3.Parameters.Add(idParameter);
+        cmd3.Parameters.Add(repeatsParameter);
+
+        cmd3.ExecuteNonQuery();
+
+        if (conn != null) conn.Close();
+      }
+    }
+
+    public static List<Job> SearchJobsbyKeyword(string searchterm)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keyword.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) where keywords.word = @keyword", conn);
+
+      SqlParameter keywordParameter = new SqlParameter();
+      keywordParameter.ParameterName = "@keyword";
+      keywordParameter.Value = searchterm;
+      cmd.Parameters.Add(keywordParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundJobId = 0;
+      string foundJobName = null;
+      string foundJobDescription = null;
+      int foundJobSalary=0;
+
+      List<Job> searchJob = new List<Job>{};
+      while(rdr.Read())
+      {
+        foundJobId = rdr.GetInt32(0);
+        foundJobName = rdr.GetString(1);
+        foundJobDescription = rdr.GetString(2);
+        foundJobSalary = rdr.GetInt32(3);
+
+        Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundJobId);
+        searchJob.Add(foundJob);
+      }
+
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return searchJob;
+
     }
   }
 }

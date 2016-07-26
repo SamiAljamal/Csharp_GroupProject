@@ -104,7 +104,7 @@ namespace JobBoard
       testJob.Save();
 
       Dictionary<string, int> result = testJob.UniqueWordCount();
-      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"a", 3}, {"cool", 2}, {"job", 2}, {"for", 1}, {"person", 1}, {"what", 1}};
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 2}, {"job", 2}, {"person", 1}, {"what", 1}};
 
       //Assert
       Assert.Equal(expectedResult, result);
@@ -118,15 +118,45 @@ namespace JobBoard
       testJob.Save();
 
       Dictionary<string, int> result = testJob.UniqueWordCount();
-      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"a", 3}, {"cool", 2}, {"job", 2}, {"for", 1}, {"person", 1}, {"what", 1}};
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 2}, {"job", 2}, {"person", 1}, {"what", 1}};
 
       //Assert
       Assert.Equal(expectedResult, result);
     }
 
+    [Fact]
+    public void Test_SaveWords_SavesKeywordtoJobs()
+    {
+      Job firstJob = new Job("Job", "Cool Job", 45000);
+      Job secondJob = new Job("job A", "Not cool  Job", 46000);
+
+      firstJob.Save();
+      secondJob.Save();
+
+      firstJob.SaveWords();
+      secondJob.SaveWords();
+
+      Assert.Equal(1,1);
+    }
+
+    [Fact]
+    public void Test_searchJobsfromkeywords_()
+    {
+      Job firstJob = new Job("Job", "Cool Job", 45000);
+      Job secondJob = new Job("job A", "Not cool  Job", 46000);
+
+      firstJob.Save();
+      secondJob.Save();
+
+      firstJob.SaveWords();
+      secondJob.SaveWords();
+
+      Assert.Equal(1,1);
+    }
+
     public void Dispose()
     {
-      Job.DeleteAll();
+      // Job.DeleteAll();
     }
   }
 }
