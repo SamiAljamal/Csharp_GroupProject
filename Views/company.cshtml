@@ -18,6 +18,7 @@
     <button type="submit" class="btn btn-success">Update Company</button>
   </form>
   <form class="form-group" action="/companies/@Model.GetId()/@Model.GetName()/deleted" method="post">
+    <input type="hidden" name="_method" value="DELETE">
     <button type="submit" name="button" class="btn btn-danger">Delete Company</button>
   </form>
   <a href="/"><h1>Back Home</h1></a>

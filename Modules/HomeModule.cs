@@ -55,7 +55,7 @@ namespace JobBoard
         );
         return View ["account.cshtml", selectedAccount];
       };
-      Post ["/accounts/{id}/{first_name}/deleted"] = parameters => {
+      Delete ["/accounts/{id}/{first_name}/deleted"] = parameters => {
         Account selectedAccount = Account.Find(parameters.id);
         selectedAccount.DeleteOne();
         return View ["deleted_account.cshtml", selectedAccount];
@@ -101,7 +101,7 @@ namespace JobBoard
         );
         return View ["job.cshtml", selectedJob];
       };
-      Post ["/jobs/{id}/{title}/deleted"] = parameters => {
+      Delete ["/jobs/{id}/{title}/deleted"] = parameters => {
         Job selectedJob = Job.Find(parameters.id);
         selectedJob.Delete();
         return View ["deleted_job.cshtml", selectedJob];
@@ -121,6 +121,16 @@ namespace JobBoard
         Company selectedCompany = Company.Find(parameters.id);
         return View ["company.cshtml", selectedCompany];
       };
+      Patch ["/companies/{id}/{name}/updated"] = parameters => {
+        Company selectedCompany = Company.Find(parameters.id);
+        selectedCompany.Update(Request.Form["company-name"]);
+        return View["company.cshtml", selectedCompany];
+      };
+      Delete ["/companies/{id}/{title}/deleted"] = parameters => {
+        Company selectedCompany = Company.Find(parameters.id);
+        selectedCompany.Delete();
+        return View ["deleted_company.cshtml", selectedCompany];
+      };
 
       Get ["/categories"] = _ => {
         return View ["categories.cshtml", Category.GetAll()];
@@ -134,6 +144,16 @@ namespace JobBoard
       Get ["/categories/{id}/{name}"] = parameters => {
         Category selectedCategory = Category.Find(parameters.id);
         return View ["category.cshtml", selectedCategory];
+      };
+      Patch ["/categories/{id}/{name}/updated"] = parameters => {
+        Category selectedCategory = Category.Find(parameters.id);
+        selectedCategory.Update(Request.Form["category-name"]);
+        return View["category.cshtml", selectedCategory];
+      };
+      Delete ["/categories/{id}/{title}/deleted"] = parameters => {
+        Category selectedCategory = Category.Find(parameters.id);
+        selectedCategory.Delete();
+        return View ["deleted_category.cshtml", selectedCategory];
       };
     }
   }

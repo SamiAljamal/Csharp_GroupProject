@@ -29,6 +29,7 @@
     <button type="submit" class="btn btn-success">Update Account</button>
   </form>
   <form class="form-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/deleted" method="post">
+    <input type="hidden" name="_method" value="DELETE">
     <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
   </form>
   <a href="/"><h1>Back Home</h1></a>
