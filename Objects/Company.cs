@@ -233,11 +233,48 @@ namespace JobBoard
       }
       return foundJobs;
     }
+
+    public List<Job> FindJobs (string searchKeyword)
+    {
+      List<Job> foundJobs = new List<Job> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) WHERE jobs.company_id = @CompanyId AND keywords.word = @Keyword;", conn);
+
+      SqlParameter companyIdParameter = new SqlParameter();
+      companyIdParameter.ParameterName = "@CompanyId";
+      companyIdParameter.Value = this.GetId();
+
+      SqlParameter keywordParameter = new SqlParameter();
+      keywordParameter.ParameterName = "@Keyword";
+      keywordParameter.Value = searchKeyword.ToLower();
+
+      cmd.Parameters.Add(keywordParameter);
+      cmd.Parameters.Add(companyIdParameter);
+
+      rdr = cmd.ExecuteReader();
+      while (rdr.Read())
+      {
+        int foundJobId = rdr.GetInt32(0);
+        string foundJobName = rdr.GetString(1);
+        string foundJobDescription = rdr.GetString(2);
+        int foundJobSalary = rdr.GetInt32(3);
+        int foundCompanyId = rdr.GetInt32(4);
+        int foundCategoryId = rdr.GetInt32(5);
+
+        Job foundJob = new Job (foundJobName, foundJobDescription, foundJobSalary, foundCompanyId, foundCategoryId, foundJobId);
+        foundJobs.Add(foundJob);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundJobs;
+    }
   }
 }
-
-
-// SqlParameter keywordParameter = new SqlParameter();
-// keywordParameter.ParameterName = "@Keyword";
-// keywordParameter.Value = searchKeyword.ToLower();
-// cmd.Parameters.Add(keywordParameter);
