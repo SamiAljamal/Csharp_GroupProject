@@ -126,10 +126,34 @@ namespace JobBoard
 
       Assert.Equal(allcourses, Company.GetAll());
     }
+
+    [Fact]
+    public void Test_GetPopularWords_ReturnsTopNUmberOfMostPopularKeywordsForCompany()
+    {
+      Company newCompany = new Company ("Company");
+      newCompany.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job. Apply now!", 46000, newCompany.GetId(), 1);
+      newJob.Save();
+      newJob.SaveWords();
+
+      Job newJob2 = new Job ("Job B", "We do not yet know what this job will consist of. Cool?", 46000, newCompany.GetId(), 1);
+      newJob2.Save();
+      newJob2.SaveWords();
+
+      Job newJob3 = new Job ("Job c", "You are not allowed to apply for this job yet", 46000, newCompany.GetId(), 1);
+      newJob3.Save();
+      newJob3.SaveWords();
+
+      Dictionary<string, int> expectedWords = new Dictionary<string, int> {{"job", 4}, {"not", 3}, {"cool", 2}, {"apply", 2}, {"yet", 2}};
+      Dictionary<string, int> resultWords = newCompany.GetPopularWords(5);
+      Assert.Equal(expectedWords, resultWords);
+    }
     public void Dispose()
     {
       Company.DeleteAll();
       Job.DeleteAll();
+      Keyword.DeleteAll();
     }
   }
 }

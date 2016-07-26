@@ -277,7 +277,7 @@ namespace JobBoard
     }
     public Dictionary<string, int> GetPopularWords(int topNumber)
     {
-      Dictionary<string, int> popularWords = new Dictionary<string, int>{};
+      Dictionary<int, int> popularWords = new Dictionary<int, int>{};
 
       SqlConnection conn = DB.Connection();
       conn.Open();
@@ -295,15 +295,15 @@ namespace JobBoard
 
       while(rdr.Read())
       {
-        string keyword = Keyword.Find(rdr.GetInt32(2)).GetWord();
+        int keywordId = rdr.GetInt32(2);
         int numberOfRepeats = rdr.GetInt32(3);
-        if(popularWords.ContainsKey(keyword))
+        if(popularWords.ContainsKey(keywordId))
         {
-          popularWords[keyword]+=numberOfRepeats;
+          popularWords[keywordId]+=numberOfRepeats;
         }
         else
         {
-          popularWords.Add(keyword, numberOfRepeats);
+          popularWords.Add(keywordId, numberOfRepeats);
         }
       }
       if (rdr != null)
@@ -317,11 +317,11 @@ namespace JobBoard
       Dictionary<string, int> rankedWords = new Dictionary<string, int>();
       var sorted = from pair in popularWords orderby pair.Value descending select pair;
       int count=0;
-      foreach (KeyValuePair<string, int> pair in sorted)
+      foreach (KeyValuePair<int, int> pair in sorted)
       {
         if(count<topNumber)
         {
-          rankedWords.Add(pair.Key, pair.Value);
+          rankedWords.Add(Keyword.Find(pair.Key).GetWord(), pair.Value);
         }
         count++;
       }

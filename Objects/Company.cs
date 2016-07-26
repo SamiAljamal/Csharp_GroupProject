@@ -276,5 +276,57 @@ namespace JobBoard
       }
       return foundJobs;
     }
+    public Dictionary<string, int> GetPopularWords(int topNumber)
+    {
+      Dictionary<int, int> popularWords = new Dictionary<int, int>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand("SELECT jobs_keywords.* FROM companies JOIN jobs ON (companies.id = jobs.company_id) JOIN jobs_keywords ON (jobs.id = jobs_keywords.job_id) WHERE companies.id = @CompanyId;", conn);
+
+      SqlParameter companyIdParameter = new SqlParameter();
+      companyIdParameter.ParameterName = "@CompanyId";
+      companyIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(companyIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int keywordId = rdr.GetInt32(2);
+        int numberOfRepeats = rdr.GetInt32(3);
+        if(popularWords.ContainsKey(keywordId))
+        {
+          popularWords[keywordId]+=numberOfRepeats;
+        }
+        else
+        {
+          popularWords.Add(keywordId, numberOfRepeats);
+        }
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      Dictionary<string, int> rankedWords = new Dictionary<string, int>();
+      var sorted = from pair in popularWords orderby pair.Value descending select pair;
+      int count=0;
+      foreach (KeyValuePair<int, int> pair in sorted)
+      {
+        if(count<topNumber)
+        {
+          rankedWords.Add(Keyword.Find(pair.Key).GetWord(), pair.Value);
+        }
+        count++;
+      }
+      return rankedWords;
+    }
   }
 }
