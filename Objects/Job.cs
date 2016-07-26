@@ -11,13 +11,17 @@ namespace JobBoard
     private string _title;
     private string _description;
     private int _salary;
+    private int _companyId;
+    private int _categoryId;
     private int _id;
 
-    public Job(string title, string description, int salary, int id=0)
+    public Job(string title, string description, int salary, int companyId, int _categoryId, int id=0)
     {
       _title = title;
       _description = description;
       _salary = salary;
+      _companyId = companyId;
+      _categoryId = categoryId;
       _id = id;
     }
 
@@ -39,6 +43,14 @@ namespace JobBoard
     {
       return _salary;
     }
+    public int GetCompanyId()
+    {
+      return _companyId;
+    }
+    public int GetCategoryId()
+    {
+      return _categoryId;
+    }
 
     public void SetTitle(string newTitle)
     {
@@ -54,6 +66,14 @@ namespace JobBoard
     {
       _salary = newSalary;
     }
+    public void SetCompanyId(int newCompanyId)
+    {
+      _companyId = newCompanyId;
+    }
+    public void SetCategoryId(int newCategoryId)
+    {
+      _categoryId = newCategoryId;
+    }
 
     public override bool Equals(System.Object otherJob)
     {
@@ -68,7 +88,9 @@ namespace JobBoard
         bool titleEquality = this.GetTitle() == newJob.GetTitle();
         bool descriptionEquality = this.GetDescription()== newJob.GetDescription();
         bool salaryEquality = this.GetSalary()== newJob.GetSalary();
-        return (idEquality && titleEquality && descriptionEquality && salaryEquality);
+        bool companyIdEquality = this.GetCompanyId() == newJob.GetCompanyId();
+        bool categoryIdEquality = this.GetCategoryId() == newJob.GetCategoryId();
+        return (idEquality && titleEquality && descriptionEquality && salaryEquality && companyIdEquality && categoryIdEquality);
       }
     }
 
@@ -89,7 +111,9 @@ namespace JobBoard
         string JobTitle = rdr.GetString(1);
         string JobDesctiption = rdr.GetString(2);
         int JobSalary = rdr.GetInt32(3);
-        Job newJob = new Job(JobTitle, JobDesctiption, JobSalary, JobId);
+        int CompanyId = rdr.GetInt32(4);
+        int CategoryId = rdr.GetInt32(5);
+        Job newJob = new Job(JobTitle, JobDesctiption, JobSalary, CompanyId, CategoryId, JobId);
         allJobs.Add(newJob);
       }
       if (rdr != null)
@@ -109,7 +133,7 @@ namespace JobBoard
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO jobs (title, description, salary) OUTPUT INSERTED.id VALUES (@JobTitle, @JobDescription, @JobSalary);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO jobs (title, description, salary, company_id, category_id) OUTPUT INSERTED.id VALUES (@JobTitle, @JobDescription, @JobSalary, @CompanyId, @CategoryId);", conn);
 
       SqlParameter titleParameter = new SqlParameter();
       titleParameter.ParameterName = "@JobTitle";
@@ -123,9 +147,19 @@ namespace JobBoard
       salaryParameter.ParameterName = "@JobSalary";
       salaryParameter.Value = this.GetSalary();
 
+      SqlParameter companyIdParameter = new SqlParameter();
+      companyIdParameter.ParameterName = "@CompanyId";
+      companyIdParameter.Value = this.GetCompanyId();
+
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetCategoryId();
+
       cmd.Parameters.Add(descriptionParameter);
       cmd.Parameters.Add(titleParameter);
       cmd.Parameters.Add(salaryParameter);
+      cmd.Parameters.Add(companyIdParameter);
+      cmd.Parameters.Add(categoryIdParameter);
 
       rdr = cmd.ExecuteReader();
 
