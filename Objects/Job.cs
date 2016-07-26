@@ -15,7 +15,7 @@ namespace JobBoard
     private int _categoryId;
     private int _id;
 
-    public Job(string title, string description, int salary, int companyId, int _categoryId, int id=0)
+    public Job(string title, string description, int salary, int companyId, int categoryId, int id=0)
     {
       _title = title;
       _description = description;
@@ -195,6 +195,8 @@ namespace JobBoard
       string foundJobName = null;
       string foundJobDescription = null;
       int foundJobSalary=0;
+      int foundCompanyId = 0;
+      int foundCategoryId = 0;
 
       while(rdr.Read())
       {
@@ -202,9 +204,10 @@ namespace JobBoard
         foundJobName = rdr.GetString(1);
         foundJobDescription = rdr.GetString(2);
         foundJobSalary = rdr.GetInt32(3);
-
+        foundCompanyId = rdr.GetInt32(4);
+        foundCategoryId = rdr.GetInt32(5);
       }
-      Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundJobId);
+      Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundCompanyId, foundCategoryId, foundJobId);
 
       if(rdr != null)
       {
@@ -217,7 +220,7 @@ namespace JobBoard
       return foundJob;
     }
 
-    public void Update(string newTitle, string newDescription, int newSalary)
+    public void Update(string newTitle, string newDescription, int newSalary, int newCompanyId, int newCategoryId)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
@@ -225,8 +228,10 @@ namespace JobBoard
       this.SetDescription(newDescription);
       this.SetTitle(newTitle);
       this.SetSalary(newSalary);
+      this.SetCompanyId(newCompanyId);
+      this.SetCategoryId(newCategoryId);
 
-      SqlCommand cmd = new SqlCommand("UPDATE jobs SET title = @NewTitle WHERE id = @JobId; UPDATE jobs SET description = @NewDescription WHERE id = @JobId; UPDATE jobs SET salary = @NewSalary WHERE id = @JobId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE jobs SET title = @NewTitle WHERE id = @JobId; UPDATE jobs SET description = @NewDescription WHERE id = @JobId; UPDATE jobs SET salary = @NewSalary WHERE id = @JobId;UPDATE jobs SET company_id = @CompanyId WHERE id = @JobId; UPDATE jobs SET category_id = @CategoryId WHERE id = @JobId;", conn);
 
       SqlParameter newTitleParameter = new SqlParameter();
       newTitleParameter.ParameterName = "@NewTitle";
@@ -242,6 +247,16 @@ namespace JobBoard
       newSalaryParameter.ParameterName = "@NewSalary";
       newSalaryParameter.Value = newSalary;
       cmd.Parameters.Add(newSalaryParameter);
+
+      SqlParameter CompanyIdParameter = new SqlParameter();
+      CompanyIdParameter.ParameterName = "@CompanyId";
+      CompanyIdParameter.Value = this.GetCompanyId();
+      cmd.Parameters.Add(CompanyIdParameter);
+
+      SqlParameter CategoryIdParameter = new SqlParameter();
+      CategoryIdParameter.ParameterName = "@CategoryId";
+      CategoryIdParameter.Value = this.GetCategoryId();
+      cmd.Parameters.Add(CategoryIdParameter);
 
       SqlParameter JobIdParameter = new SqlParameter();
       JobIdParameter.ParameterName = "@JobId";
@@ -405,6 +420,8 @@ namespace JobBoard
       string foundJobName = null;
       string foundJobDescription = null;
       int foundJobSalary=0;
+      int foundCompanyId = 0;
+      int foundCategoryId = 0;
 
       List<Job> searchJob = new List<Job>{};
       while(rdr.Read())
@@ -413,8 +430,10 @@ namespace JobBoard
         foundJobName = rdr.GetString(1);
         foundJobDescription = rdr.GetString(2);
         foundJobSalary = rdr.GetInt32(3);
+        foundCompanyId = rdr.GetInt32(4);
+        foundCategoryId = rdr.GetInt32(5);
 
-        Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundJobId);
+        Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundCompanyId, foundCategoryId, foundJobId);
         int searchTotal = foundJob.UniqueWordCount()[searchterm];
 
         searchDictionary.Add(foundJob, searchTotal);

@@ -23,15 +23,15 @@ namespace JobBoard
     [Fact]
     public void Test_Equal_ReturnsTrueIfJobsAreTheSame()
     {
-      Job firstJob = new Job("Job", "Cool Job", 45000);
-      Job secondJob = new Job("Job", "Cool Job", 45000);
+      Job firstJob = new Job("Job", "Cool Job", 45000, 1, 1);
+      Job secondJob = new Job("Job", "Cool Job", 45000, 1, 1);
       Assert.Equal(firstJob, secondJob);
     }
 
     [Fact]
     public void Test_Save_SavesJobToDatabase()
     {
-      Job testJob = new Job("Job", "Cool Job", 45000);
+      Job testJob = new Job("Job", "Cool Job", 45000, 1, 1);
       testJob.Save();
 
       List<Job> testJobs = new List<Job>{testJob};
@@ -44,7 +44,7 @@ namespace JobBoard
     public void Test_Save_AssignsIdToJob()
     {
 
-      Job testJob = new Job("Job", "Cool Job", 45000);
+      Job testJob = new Job("Job", "Cool Job", 45000, 1, 1);
       testJob.Save();
       Job savedJob = Job.GetAll()[0];
 
@@ -58,7 +58,7 @@ namespace JobBoard
     public void Test_Find_FindsJobInDatabase()
     {
       //Arrange
-    Job testJob = new Job("Job", "Cool Job", 45000);
+    Job testJob = new Job("Job", "Cool Job", 45000, 1, 1);
       testJob.Save();
 
       //Act
@@ -71,13 +71,15 @@ namespace JobBoard
     [Fact]
     public void Test_Update_UpdatesJobInDatabase()
     {
-      Job testJob = new Job("Job", "Cool Job", 45000);
+      Job testJob = new Job("Job", "Cool Job", 45000, 1, 1);
       testJob.Save();
       string newTitle = "Dr. Love";
       string newDesription = "love people";
       int newSalary= 5000000;
+      int newCompanyId = 2;
+      int newCategoryId = 2;
 
-      testJob.Update(newTitle, newDesription, newSalary);
+      testJob.Update(newTitle, newDesription, newSalary, newCompanyId, newCategoryId);
 
       Assert.Equal(newTitle, testJob.GetTitle());
     }
@@ -85,8 +87,8 @@ namespace JobBoard
     [Fact]
     public void Test_Delete_DeleteJobfromDB()
     {
-      Job firstJob = new Job("Job", "Cool Job", 45000);
-      Job secondJob = new Job("Job", "Cool Job", 45000);
+      Job firstJob = new Job("Job", "Cool Job", 45000, 1, 1);
+      Job secondJob = new Job("Job", "Cool Job", 45000, 1, 1);
       firstJob.Save();
       secondJob.Save();
 
@@ -101,7 +103,7 @@ namespace JobBoard
     public void Test_UniqueWordCount_ReturnsDictionaryWithWordsAndCounts()
     {
 
-      Job testJob = new Job("Job", "A cool job for a Cool Person what a job", 45000);
+      Job testJob = new Job("Job", "A cool job for a Cool Person what a job", 45000, 1, 1);
       testJob.Save();
 
       Dictionary<string, int> result = testJob.UniqueWordCount();
@@ -115,7 +117,7 @@ namespace JobBoard
     public void Test_UniqueWordCount_HandlesPunctuationSensibly()
     {
 
-      Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000);
+      Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000, 1, 1);
       testJob.Save();
 
       Dictionary<string, int> result = testJob.UniqueWordCount();
@@ -128,8 +130,8 @@ namespace JobBoard
     [Fact]
     public void Test_SaveWords_SavesKeywordtoJobs()
     {
-      Job firstJob = new Job("Job", "Cool Job", 45000);
-      Job secondJob = new Job("job A", "Not cool  Job", 46000);
+      Job firstJob = new Job("Job", "Cool Job", 45000, 1, 1);
+      Job secondJob = new Job("job A", "Not cool  Job", 46000, 1, 1);
 
       firstJob.Save();
       secondJob.Save();
@@ -143,8 +145,8 @@ namespace JobBoard
     [Fact]
     public void Test_searchJobsfromkeywords_()
     {
-      Job firstJob = new Job("Job", "Cool Job", 45000);
-      Job secondJob = new Job("Job A", "A job, but not cool job", 46000);
+      Job firstJob = new Job("Job", "Cool Job", 45000, 1, 1);
+      Job secondJob = new Job("Job A", "A job, but not cool job", 46000, 1, 1);
 
       firstJob.Save();
       secondJob.Save();

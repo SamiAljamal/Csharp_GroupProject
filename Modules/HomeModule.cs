@@ -26,7 +26,7 @@ namespace JobBoard
       };
 
       Post["/keyword"]=_=>{
-        Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"]);
+        Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], Request.Form["company-id"], Request.Form["category-id"]);
         newJob.Save();
         return View["result.cshtml", newJob];
       };
