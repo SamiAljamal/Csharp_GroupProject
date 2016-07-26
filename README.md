@@ -61,7 +61,15 @@ The program should ... | Example Input | Example Output
 ----- | ----- | -----
 Have CRUD functionality for an account | --- | ---
 Have CRUD functionality for a job listing | --- | ---
+Have CRUD functionality for company profile | --- | ---
+Have CRUD functionality for a category of jobs | --- | ---
 Create a keywords list with the most common words used in a job description | --- | ---
+View all jobs in a company | --- | ---
+View all jobs in a category | --- | ---
+View all jobs in a company that contain a keyword | --- | ---
+View all jobs in a category that contain a keyword | --- | ---
+View list of top keywords for a company | --- | ---
+View list of top keywords for a category | --- | ---
 
 ## Future Features
 

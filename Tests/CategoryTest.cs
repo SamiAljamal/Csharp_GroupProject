@@ -126,7 +126,7 @@ namespace JobBoard
       Assert.Equal(testJobList, resultJobList);
     }
     [Fact]
-    public void Test_GetPopularWords_ReturnsTopNUmberOfMostPopularKeywordsForCategory()
+    public void Test_GetPopularWords_ReturnsTopNumberOfMostPopularKeywordsForCategory()
     {
       Category newCategory = new Category ("Category");
       newCategory.Save();

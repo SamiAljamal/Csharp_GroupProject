@@ -128,7 +128,7 @@ namespace JobBoard
     }
 
     [Fact]
-    public void Test_GetPopularWords_ReturnsTopNUmberOfMostPopularKeywordsForCompany()
+    public void Test_GetPopularWords_ReturnsTopNumberOfMostPopularKeywordsForCompany()
     {
       Company newCompany = new Company ("Company");
       newCompany.Save();
