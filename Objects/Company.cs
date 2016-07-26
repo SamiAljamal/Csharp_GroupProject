@@ -16,7 +16,6 @@ namespace JobBoard
       _name = name;
       _id = id;
     }
-
     public int GetId()
     {
       return _id;
@@ -26,12 +25,10 @@ namespace JobBoard
     {
       return _name;
     }
-
     public void SetName(string newName)
     {
       _name = newName;
     }
-
     public override bool Equals(System.Object otherCompany)
     {
       if (!(otherCompany is Company))
@@ -46,7 +43,6 @@ namespace JobBoard
         return (idEquality && nameEquality);
       }
     }
-
     public static List<Company> GetAll()
     {
       List<Company> allCompanys = new List<Company>{};
@@ -75,7 +71,6 @@ namespace JobBoard
       }
       return allCompanys;
     }
-
     public void Save()
     {
       SqlConnection conn = DB.Connection();
@@ -105,7 +100,6 @@ namespace JobBoard
         conn.Close();
       }
     }
-
     public static Company Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -141,7 +135,6 @@ namespace JobBoard
       }
       return foundCompany;
     }
-
     public void Update(string newName)
     {
       SqlConnection conn = DB.Connection();
@@ -169,33 +162,6 @@ namespace JobBoard
         conn.Close();
       }
     }
-    public void Delete()
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("DELETE FROM companies WHERE id = @CompanyId;", conn);
-
-      SqlParameter companyIdParameter = new SqlParameter();
-      companyIdParameter.ParameterName = "@CompanyId";
-      companyIdParameter.Value = this.GetId();
-
-      cmd.Parameters.Add(companyIdParameter);
-      cmd.ExecuteNonQuery();
-
-      if (conn != null)
-      {
-        conn.Close();
-      }
-    }
-    public static void DeleteAll()
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM companies;", conn);
-      cmd.ExecuteNonQuery();
-    }
-
     public List<Job> GetJobs ()
     {
       List<Job> foundJobs = new List<Job> {};
@@ -233,7 +199,6 @@ namespace JobBoard
       }
       return foundJobs;
     }
-
     public List<Job> FindJobs (string searchKeyword)
     {
       List<Job> foundJobs = new List<Job> {};
@@ -327,6 +292,64 @@ namespace JobBoard
         count++;
       }
       return rankedWords;
+    }
+    public List<Category> GetCategories()
+    {
+      List<Category> allCategories = new List<Category> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand ("SELECT categories.* FROM companies JOIN jobs ON (companies.id = jobs.company_id) JOIN categories ON (categories.id = jobs.category_id) WHERE companies.id = @CompanyId;", conn);
+
+      SqlParameter companyIdParameter = new SqlParameter();
+      companyIdParameter.ParameterName = "@CompanyId";
+      companyIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(companyIdParameter);
+      rdr = cmd.ExecuteReader();
+      while (rdr.Read())
+      {
+        int categoryId = rdr.GetInt32(0);
+        string categoryName = rdr.GetString(1);
+        Category newCategory = new Category (categoryName, categoryId);
+        allCategories.Add(newCategory);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allCategories;
+    }
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM companies WHERE id = @CompanyId;", conn);
+
+      SqlParameter companyIdParameter = new SqlParameter();
+      companyIdParameter.ParameterName = "@CompanyId";
+      companyIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(companyIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM companies;", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }

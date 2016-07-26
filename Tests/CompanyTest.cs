@@ -19,7 +19,6 @@ namespace JobBoard
       int result = Company.GetAll().Count;
       Assert.Equal(0, result);
     }
-
     [Fact]
     public void Test_Equal_ReturnsTrueIfCompanysAreTheSame()
     {
@@ -27,7 +26,6 @@ namespace JobBoard
       Company secondCompany = new Company("Company");
       Assert.Equal(firstCompany, secondCompany);
     }
-
     [Fact]
     public void Test_Save_SavesCompanyToDatabase()
     {
@@ -39,7 +37,6 @@ namespace JobBoard
 
       Assert.Equal(testCompanys, resultCompanys);
     }
-
     [Fact]
     public void Test_Save_AssignsIdToCompany()
     {
@@ -51,23 +48,18 @@ namespace JobBoard
       int result = savedCompany.GetId();
       int testId = testCompany.GetId();
 
-      //Assert
       Assert.Equal(testId, result);
     }
     [Fact]
     public void Test_Find_FindsCompanyInDatabase()
     {
-      //Arrange
-    Company testCompany = new Company("Company");
+      Company testCompany = new Company("Company");
       testCompany.Save();
 
-      //Act
       Company foundCompany = Company.Find(testCompany.GetId());
 
-      //Assert
       Assert.Equal(testCompany, foundCompany);
     }
-
     [Fact]
     public void Test_Update_UpdatesCompanyInDatabase()
     {
@@ -79,7 +71,6 @@ namespace JobBoard
 
       Assert.Equal(newName, testCompany.GetName());
     }
-
     [Fact]
     public void Test_GetJobs_ReturnsAllJobsInCompany()
     {
@@ -95,7 +86,6 @@ namespace JobBoard
 
       Assert.Equal(testJobList, resultJobList);
     }
-
     [Fact]
     public void Test_FindJobs_ReturnsJobsInCompanyWithKeyword()
     {
@@ -111,22 +101,6 @@ namespace JobBoard
 
       Assert.Equal(testJobList, resultJobList);
     }
-
-    [Fact]
-    public void Test_Delete_DeleteCompanyfromDB()
-    {
-      Company firstCompany = new Company("Company");
-      Company secondCompany = new Company("Company");
-      firstCompany.Save();
-      secondCompany.Save();
-
-      List<Company> allcourses = new List<Company>{firstCompany,secondCompany};
-      allcourses.Remove(firstCompany);
-      firstCompany.Delete();
-
-      Assert.Equal(allcourses, Company.GetAll());
-    }
-
     [Fact]
     public void Test_GetPopularWords_ReturnsTopNumberOfMostPopularKeywordsForCompany()
     {
@@ -148,6 +122,40 @@ namespace JobBoard
       Dictionary<string, int> expectedWords = new Dictionary<string, int> {{"job", 4}, {"not", 3}, {"cool", 2}, {"apply", 2}, {"yet", 2}};
       Dictionary<string, int> resultWords = newCompany.GetPopularWords(5);
       Assert.Equal(expectedWords, resultWords);
+    }
+    [Fact]
+    public void Test_GetCategories_ReturnsAllCategoriesByCompany()
+    {
+      Company newCompany = new Company("Company");
+      newCompany.Save();
+
+      Category firstCategory = new Category("Category");
+      Category secondCategory = new Category("Category2");
+      firstCategory.Save();
+      secondCategory.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job. Apply now!", 46000, newCompany.GetId(), firstCategory.GetId());
+      newJob.Save();
+      newJob.SaveWords();
+
+      List<Category> testCategoryList = new List<Category> {firstCategory};
+      List<Category> resultCategoryList = newCompany.GetCategories();
+
+      Assert.Equal(testCategoryList, resultCategoryList);
+    }
+    [Fact]
+    public void Test_Delete_DeleteCompanyfromDB()
+    {
+      Company firstCompany = new Company("Company");
+      Company secondCompany = new Company("Company");
+      firstCompany.Save();
+      secondCompany.Save();
+
+      List<Company> allcourses = new List<Company>{firstCompany,secondCompany};
+      allcourses.Remove(firstCompany);
+      firstCompany.Delete();
+
+      Assert.Equal(allcourses, Company.GetAll());
     }
     public void Dispose()
     {
