@@ -3,11 +3,41 @@
   <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
 </head>
 <body>
-  <h1>List of All Jobs</h1>
+  <h1>Your Dashboard</h1>
+
+  <h2>Find job listings on Indeed</h2>
+  <form action='http://www.indeed.com/jobs' target ="_blank" METHOD='GET'>
+    <table cellspacing='0' style='font-family:arial'>
+      <tr><td style='font-size:16px;color:#FF6600'><b>Job Search</b></td><td></td></tr>
+      <tr>
+        <td><input name='q' value='' size='25'></td>
+        <td><input type='submit' value='Find Jobs'></td>
+      </tr>
+      <tr>
+        <td valign='top' style='font-size:10px'>
+          job title, keywords, company, location
+        </td>
+        <td colspan='1'  valign='top' style='font-size:10px;padding:0px;margin:0px;border:0px;width:116px;'>
+          <a href='http://www.indeed.com'>
+            <img align='right' border='0' src='http://www.indeed.com/images/poweredbyindeed.gif'>
+          </a>
+        </td>
+      </tr></table></form>
+
+  <h2>Add a New Job Listing</h2>
+  <form class="from-group" action="/jobs" method="post">
+    <h3>Title<input type="text" name="job-title" class="form-control"></h3>
+    <h3>Description<input type="text" name="job-description" class="form-control"></h3>
+    <h3>Salary<input type="text" name="job-salary" class="form-control"></h3>
+    <button type="btn" class="btn btn-success">Create Job</button>
+  </form>
+  <a href="/"><h1>Back Home</h1></a>
+
+  <h2>Your current postings</h2>
   @foreach (var job in Model)
   {
     <ul>
-      <a href="/jobs/@job.GetId()/@job.GetTitle()"><li>@job.GetTitle()</li></a>
+      <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
     </ul>
   }
   <a href="/"><h1>Back Home</h1></a>

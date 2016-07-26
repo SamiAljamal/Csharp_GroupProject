@@ -264,19 +264,45 @@ namespace JobBoard
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
       List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
-      string jobDescription = this.GetDescription().ToLower() + " ";
-      string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
-      string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
+      string jobDescription = this.GetDescription() + " ";
+      string trimmedJobDescription = Regex.Replace(jobDescription, @" [\(]", " ");
       Regex whitespace = new Regex(@"\s+");
       string[] wordList = whitespace.Split(trimmedJobDescription);
+
+      Dictionary<string, int> items = new Dictionary<string, int>();
+
+
+      // Make logic to join words that are capitalized and NOT separated by punctuation, add them to a dictionary, and then remove them from the original string.
       for(int i=0; i < wordList.Length-1; i++)
       {
-        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
+        if(!prepositions.Contains(wordList[i].ToLower()) && !commonWords.Contains(wordList[i].ToLower()))
         {
-          string trimedWordOne = wordList[i];
-
           int count=0;
-          if(!UniqueWords.ContainsKey(wordList[i]))
+
+          if (char.IsUpper(wordList[i][0]) && char.IsUpper(wordList[i+1][0]))
+          {
+            if(!UniqueWords.ContainsKey((wordList[i] + " " + wordList[i+1])))
+            {
+              for(int j = i; j < wordList.Length-1; j++)
+              {
+                if((wordList[i] + " " + wordList[i+1]) == (wordList[j] + " " + wordList[j+1])) count+=1;
+              }
+              UniqueWords.Add((wordList[i] + " " + wordList[i+1]), count);
+              i++;
+            }
+          }
+        }
+      }
+
+      //
+
+
+      string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+
+
+      for(int i=0; i < wordList.Length-1; i++)
+        {
+        if(!UniqueWords.ContainsKey(wordList[i]))
           {
             for(int j = i; j < wordList.Length-1; j++)
             {
@@ -286,7 +312,7 @@ namespace JobBoard
           }
         }
       }
-      Dictionary<string, int> items = new Dictionary<string, int>();
+
       var sorted = from pair in UniqueWords orderby pair.Value descending select pair;
       foreach (KeyValuePair<string, int> pair in sorted)
       {

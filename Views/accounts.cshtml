@@ -7,7 +7,7 @@
   @foreach (var account in Model)
   {
     <ul>
-      <li>@account.GetFirstName() @account.GetLastName()</li>
+      <li><a href="/accounts/@account.GetId()/@account.GetFirstName()">@account.GetFirstName() @account.GetLastName()</a></li>
     </ul>
   }
   <a href="/"><h1>Back Home</h1></a>
