@@ -79,8 +79,8 @@ namespace JobBoard
           Request.Form ["job-title"],
           Request.Form ["job-description"],
           Request.Form ["job-salary"],
-          Request.Form ["company-id"],
-          Request.Form ["category-id"]
+          Request.Form ["company"],
+          Request.Form ["category"]
         );
         newJob.Save();
         return View ["jobs.cshtml", Job.GetAll()];
@@ -112,10 +112,14 @@ namespace JobBoard
       };
       Get ["/companies/new"] = _ => View ["company_form.cshtml"];
 
-      Post["/companies"]=_=> {
+      Post ["/companies"] = _ => {
         Company newCompany = new Company(Request.Form["company-name"]);
         newCompany.Save();
         return View ["companies.cshtml", Company.GetAll()];
+      };
+      Get ["/companies/{id}/{name}"] = parameters => {
+        Company selectedCompany = Company.Find(parameters.id);
+        return View ["company.cshtml", selectedCompany];
       };
 
       Get ["/categories"] = _ => {
@@ -126,6 +130,10 @@ namespace JobBoard
         Category newCategory = new Category(Request.Form["category-name"]);
         newCategory.Save();
         return View ["categories.cshtml", Category.GetAll()];
+      };
+      Get ["/categories/{id}/{name}"] = parameters => {
+        Category selectedCategory = Category.Find(parameters.id);
+        return View ["category.cshtml", selectedCategory];
       };
     }
   }

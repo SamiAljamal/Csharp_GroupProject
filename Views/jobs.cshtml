@@ -24,15 +24,6 @@
         </td>
       </tr></table></form>
 
-  <h2>Add a New Job Listing</h2>
-  <form class="from-group" action="/jobs" method="post">
-    <h3>Title<input type="text" name="job-title" class="form-control"></h3>
-    <h3>Description<input type="text" name="job-description" class="form-control"></h3>
-    <h3>Salary<input type="text" name="job-salary" class="form-control"></h3>
-    <button type="btn" class="btn btn-success">Create Job</button>
-  </form>
-  <a href="/"><h1>Back Home</h1></a>
-
   <h2>Your current postings</h2>
   @foreach (var job in Model)
   {
@@ -40,5 +31,6 @@
       <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
     </ul>
   }
+  <a href="/jobs/new"><h1>Create a New Job</h1></a>
   <a href="/"><h1>Back Home</h1></a>
 </body>
