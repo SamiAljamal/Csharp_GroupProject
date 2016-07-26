@@ -275,33 +275,57 @@ namespace JobBoard
       }
       return foundJobs;
     }
-    // public Dictionary<string, int> GetPopularWords()
-    // {
-    //   Dictionary<string, int> popularWords = new Dictionary<string, int>{};
-    //
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   SqlDataReader rdr = null;
-    //
-    //   SqlCommand cmd = new SqlCommand("SELECT jobs_keywords.* FROM categories JOIN jobs ON (categories.id = jobs.category_id) JOIN jobs_keywords ON (jobs.id = jobs_keywords.job_id) WHERE categories.id = @CategoryId;", conn);
-    //
-    //   SqlParameter categoryIdParameter = new SqlParameter();
-    //   categoryIdParameter.ParameterName = "@CategoryId";
-    //   categoryIdParameter.Value = this.GetId();
-    //
-    //   cmd.Parameters.Add(categoryIdParameter);
-    //
-    //   rdr = cmd.ExecuteReader();
-    //
-    //   while(rdr.Read())
-    //   {
-    //     int keywordId = rdr.GetInt32(2);
-    //     int numberOfRepeats = rdr.GetInt32(3);
-    //     if(popularWords.ContainsKey(Job.UniqueWordCount()))
-    //     {
-    //
-    //     }
-    //   }
-    // }
+    public Dictionary<string, int> GetPopularWords(int topNumber)
+    {
+      Dictionary<string, int> popularWords = new Dictionary<string, int>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand("SELECT jobs_keywords.* FROM categories JOIN jobs ON (categories.id = jobs.category_id) JOIN jobs_keywords ON (jobs.id = jobs_keywords.job_id) WHERE categories.id = @CategoryId;", conn);
+
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(categoryIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        string keyword = Keyword.Find(rdr.GetInt32(2)).GetWord();
+        int numberOfRepeats = rdr.GetInt32(3);
+        if(popularWords.ContainsKey(keyword))
+        {
+          popularWords[keyword]+=numberOfRepeats;
+        }
+        else
+        {
+          popularWords.Add(keyword, numberOfRepeats);
+        }
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      Dictionary<string, int> rankedWords = new Dictionary<string, int>();
+      var sorted = from pair in popularWords orderby pair.Value descending select pair;
+      int count=0;
+      foreach (KeyValuePair<string, int> pair in sorted)
+      {
+        if(count<topNumber)
+        {
+          rankedWords.Add(pair.Key, pair.Value);
+        }
+        count++;
+      }
+      return rankedWords;
+    }
   }
 }
