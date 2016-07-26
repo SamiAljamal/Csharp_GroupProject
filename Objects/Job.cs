@@ -244,7 +244,7 @@ namespace JobBoard
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM jobs;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM jobs; DELETE FROM jobs_keywords; DELETE FROM keywords;", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -350,18 +350,21 @@ namespace JobBoard
       }
     }
 
-    public static List<Job> SearchJobsbyKeyword(string searchterm)
+    public static Dictionary<Job, int> SearchJobsbyKeyword(string searchterm)
     {
+      Dictionary<Job, int> searchDictionary = new Dictionary<Job, int> {};
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) where keywords.word = @keyword", conn);
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) where keywords.word = @keyword;", conn);
 
       SqlParameter keywordParameter = new SqlParameter();
       keywordParameter.ParameterName = "@keyword";
       keywordParameter.Value = searchterm;
       cmd.Parameters.Add(keywordParameter);
+
+
       rdr = cmd.ExecuteReader();
 
       int foundJobId = 0;
@@ -378,10 +381,10 @@ namespace JobBoard
         foundJobSalary = rdr.GetInt32(3);
 
         Job foundJob = new Job(foundJobName, foundJobDescription, foundJobSalary, foundJobId);
-        searchJob.Add(foundJob);
+        int searchTotal = foundJob.UniqueWordCount()[searchterm];
+
+        searchDictionary.Add(foundJob, searchTotal);
       }
-
-
       if(rdr != null)
       {
         rdr.Close();
@@ -390,8 +393,7 @@ namespace JobBoard
       {
         conn.Close();
       }
-      return searchJob;
-
+      return searchDictionary;
     }
   }
 }
