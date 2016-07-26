@@ -58,7 +58,7 @@ namespace JobBoard
     public void Test_Find_FindsCategoryInDatabase()
     {
       //Arrange
-    Category testCategory = new Category("Category");
+      Category testCategory = new Category("Category");
       testCategory.Save();
 
       //Act
@@ -94,6 +94,59 @@ namespace JobBoard
 
       Assert.Equal(allcourses, Category.GetAll());
     }
+    [Fact]
+    public void Test_GetJobs_ReturnsAllJobsInCategory()
+    {
+      Category newCategory = new Category ("Category");
+      newCategory.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job", 46000, 1, newCategory.GetId());
+      newJob.Save();
+      newJob.SaveWords();
+
+      List<Job> testJobList = new List<Job> {newJob};
+      List<Job> resultJobList = newCategory.GetJobs();
+
+      Assert.Equal(testJobList, resultJobList);
+    }
+
+    [Fact]
+    public void Test_FindJobs_ReturnsJobsInCategoryWithKeyword()
+    {
+      Category newCategory = new Category ("Category");
+      newCategory.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job", 46000, 1, newCategory.GetId());
+      newJob.Save();
+      newJob.SaveWords();
+
+      List<Job> testJobList = new List<Job> {newJob};
+      List<Job> resultJobList = newCategory.FindJobs("cool");
+
+      Assert.Equal(testJobList, resultJobList);
+    }
+    // [Fact]
+    // public void Test_MostPopularKeywords_ReturnsTopFiveMostPopularKeywordsForCategory()
+    // {
+    //   Category newCategory = new Category ("Category");
+    //   newCategory.Save();
+    //
+    //   Job newJob = new Job ("Job A", "A job, but not cool job. Apply now!", 46000, 1, newCategory.GetId());
+    //   newJob.Save();
+    //   newJob.SaveWords();
+    //
+    //   Job newJob2 = new Job ("Job B", "We do not yet know what this job will consist of. Cool?", 46000, 1, newCategory.GetId());
+    //   newJob2.Save();
+    //   newJob2.SaveWords();
+    //
+    //   Job newJob3 = new Job ("Job c", "You are not allowed to apply for this job yet", 46000, 1, newCategory.GetId());
+    //   newJob3.Save();
+    //   newJob3.SaveWords();
+    //
+    //   Dictionary<string, int> expectedWords = new Dictionary<string, int> {{"job", 4}, {"not", 3}, {"cool", 2}, {"yet", 2}, {"apply", 2}};
+    //   Dictionary<string, int> resultWords = newCategory.GetPopularWords();
+    //   Assert.Equal(expectedWords, resultWords);
+    // }
     public void Dispose()
     {
       Category.DeleteAll();

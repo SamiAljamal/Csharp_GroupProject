@@ -195,5 +195,113 @@ namespace JobBoard
       SqlCommand cmd = new SqlCommand("DELETE FROM categories;", conn);
       cmd.ExecuteNonQuery();
     }
+    public List<Job> GetJobs ()
+    {
+      List<Job> foundJobs = new List<Job> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+      SqlCommand cmd = new SqlCommand ("SELECT * FROM jobs WHERE category_id = @CategoryId;", conn);
+
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(categoryIdParameter);
+
+      rdr = cmd.ExecuteReader();
+      while (rdr.Read())
+      {
+        int foundJobId = rdr.GetInt32(0);
+        string foundJobName = rdr.GetString(1);
+        string foundJobDescription = rdr.GetString(2);
+        int foundJobSalary = rdr.GetInt32(3);
+        int foundCompanyId = rdr.GetInt32(4);
+        int foundCategoryId = rdr.GetInt32(5);
+
+        Job foundJob = new Job (foundJobName, foundJobDescription, foundJobSalary, foundCompanyId, foundCategoryId, foundJobId);
+        foundJobs.Add(foundJob);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundJobs;
+    }
+
+    public List<Job> FindJobs (string searchKeyword)
+    {
+      List<Job> foundJobs = new List<Job> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) WHERE jobs.category_id = @CategoryId AND keywords.word = @Keyword;", conn);
+
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetId();
+
+      SqlParameter keywordParameter = new SqlParameter();
+      keywordParameter.ParameterName = "@Keyword";
+      keywordParameter.Value = searchKeyword.ToLower();
+
+      cmd.Parameters.Add(keywordParameter);
+      cmd.Parameters.Add(categoryIdParameter);
+
+      rdr = cmd.ExecuteReader();
+      while (rdr.Read())
+      {
+        int foundJobId = rdr.GetInt32(0);
+        string foundJobName = rdr.GetString(1);
+        string foundJobDescription = rdr.GetString(2);
+        int foundJobSalary = rdr.GetInt32(3);
+        int foundCompanyId = rdr.GetInt32(4);
+        int foundCategoryId = rdr.GetInt32(5);
+
+        Job foundJob = new Job (foundJobName, foundJobDescription, foundJobSalary, foundCompanyId, foundCategoryId, foundJobId);
+        foundJobs.Add(foundJob);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundJobs;
+    }
+    // public Dictionary<string, int> GetPopularWords()
+    // {
+    //   Dictionary<string, int> popularWords = new Dictionary<string, int>{};
+    //
+    //   SqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   SqlDataReader rdr = null;
+    //
+    //   SqlCommand cmd = new SqlCommand("SELECT jobs_keywords.* FROM categories JOIN jobs ON (categories.id = jobs.category_id) JOIN jobs_keywords ON (jobs.id = jobs_keywords.job_id) WHERE categories.id = @CategoryId;", conn);
+    //
+    //   SqlParameter categoryIdParameter = new SqlParameter();
+    //   categoryIdParameter.ParameterName = "@CategoryId";
+    //   categoryIdParameter.Value = this.GetId();
+    //
+    //   cmd.Parameters.Add(categoryIdParameter);
+    //
+    //   rdr = cmd.ExecuteReader();
+    //
+    //   while(rdr.Read())
+    //   {
+    //     int keywordId = rdr.GetInt32(2);
+    //     int numberOfRepeats = rdr.GetInt32(3);
+    //     if(popularWords.ContainsKey(Job.UniqueWordCount()))
+    //     {
+    //
+    //     }
+    //   }
+    // }
   }
 }
