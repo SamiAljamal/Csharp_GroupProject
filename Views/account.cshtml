@@ -6,6 +6,7 @@
   <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
   <h2>Here are all the jobs we recommend for you:</h2>
   <h2>Update Your Information</h2>
+  <!-- Maybe put the update form in a modal? -->
   <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
     <input type="hidden" name="_method" value="PATCH">
     <h2>First Name<input type="text" name="account-first-name" class="form-control"></h2>
@@ -31,4 +32,5 @@
     <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
   </form>
   <a href="/"><h1>Back Home</h1></a>
+  <a href="/jobs"><h1>Jobs</h1></a>
 </body>

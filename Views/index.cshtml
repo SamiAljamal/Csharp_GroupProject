@@ -3,6 +3,16 @@
   <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
 </head>
 <body>
+
+  <h2>Log In</h2>
+  <form action="/login" method="post">
+    <label for="username">Username: </label>
+    <input type="text" name="username" value="">
+    <label for="password">Password: </label>
+    <input type="text" name="password" value="">
+  </form>
+
+
   <h2>Word count</h2>
   <form  action="/keyword" method="post">
     <input type="text" name="title" value="">
@@ -15,7 +25,9 @@
   {
     <a href="/accounts/@account.GetId()/@account.GetFirstName()"><h3>@account.GetFirstName() @account.GetLastName()</h3></a>
   }
-  <a href="/accounts/new">Create A New Account</a>
-  <a href="/jobs/new">Create a New Job Post</a>
-  <a href="/jobs">View All Jobs</a>
+  <p><a href="/accounts/new">Create A New Account</a></p>
+  <p><a href="/accounts/">View All Accounts</a></p>
+  <p><a href="/jobs/new">Create a New Job Post</a></p>
+  <p><a href="/jobs">View All Jobs</a></p>
+
 </body>

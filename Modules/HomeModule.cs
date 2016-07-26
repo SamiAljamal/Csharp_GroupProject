@@ -9,6 +9,11 @@ namespace JobBoard
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
       Get ["/jobs/new"] = _ => View ["job_form.cshtml"];
+
+      Get ["/accounts"] = _ => {
+        return View ["accounts.cshtml", Account.GetAll()];
+      };
+
       Post ["/accounts"] = _ => {
         Account newAccount = new Account
         (

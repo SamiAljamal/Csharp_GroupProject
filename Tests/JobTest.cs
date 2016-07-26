@@ -113,16 +113,12 @@ namespace JobBoard
     }
 
     [Fact]
-    public void Test_UniqueWordCount_HandlesPunctuationSensibly()
+    public void Test_UniqueWordCount_CountsAdjoiningCapitalWordsAsOne()
     {
-
       Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000, 1, 1);
       testJob.Save();
-
       Dictionary<string, int> result = testJob.UniqueWordCount();
-      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 2}, {"job", 2}, {"person", 1}, {"what", 1}};
-
-      //Assert
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 1}, {"job", 2}, {"Cool Person", 1}, {"what", 1}};
       Assert.Equal(expectedResult, result);
     }
 
