@@ -143,7 +143,7 @@ namespace JobBoard
     }
 
     [Fact]
-    public void Test_searchJobsfromkeywords_()
+    public void Test_SearchJobsFromKeywords()
     {
       Job firstJob = new Job("Job", "Cool Job", 45000, 1, 1);
       Job secondJob = new Job("Job A", "A job, but not cool job", 46000, 1, 1);

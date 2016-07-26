@@ -406,7 +406,7 @@ namespace JobBoard
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) where keywords.word = @keyword;", conn);
+      SqlCommand cmd = new SqlCommand ("SELECT jobs.* FROM keywords JOIN jobs_keywords ON (keywords.id = jobs_keywords.keyword_id) JOIN jobs ON (jobs_keywords.job_id = jobs.id) WHERE keywords.word = @keyword;", conn);
 
       SqlParameter keywordParameter = new SqlParameter();
       keywordParameter.ParameterName = "@keyword";

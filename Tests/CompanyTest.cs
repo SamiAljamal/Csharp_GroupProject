@@ -81,6 +81,38 @@ namespace JobBoard
     }
 
     [Fact]
+    public void Test_GetJobs_ReturnsAllJobsInCompany()
+    {
+      Company newCompany = new Company ("Company");
+      newCompany.Save();
+
+      Job newJob = new Job ("Job A", "A job, but not cool job", 46000, newCompany.GetId(), 1);
+      newJob.Save();
+      newJob.SaveWords();
+
+      List<Job> testJobList = new List<Job> {newJob};
+      List<Job> resultJobList = newCompany.GetJobs();
+
+      Assert.Equal(testJobList, resultJobList);
+    }
+
+    // [Fact]
+    // public void Test_FindJobs_ReturnsJobsInCompanyWithKeyword()
+    // {
+    //   Company newCompany = new Company ("Company");
+    //   newCompany.Save();
+    //
+    //   Job newJob = new Job ("Job A", "A job, but not cool job", 46000, 1, 1);
+    //   newJob.Save();
+    //   newJob.SaveWords();
+    //
+    //   List<Job> testJobList = new List<Job> {newJob};
+    //   List<Job> resultJobList = newCompany.FindJobs("cool");
+    //
+    //   Assert.Equal(testJobList, resultJobList);
+    // }
+
+    [Fact]
     public void Test_Delete_DeleteCompanyfromDB()
     {
       Company firstCompany = new Company("Company");
@@ -97,6 +129,7 @@ namespace JobBoard
     public void Dispose()
     {
       Company.DeleteAll();
+      Job.DeleteAll();
     }
   }
 }
