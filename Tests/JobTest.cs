@@ -144,7 +144,7 @@ namespace JobBoard
     public void Test_searchJobsfromkeywords_()
     {
       Job firstJob = new Job("Job", "Cool Job", 45000);
-      Job secondJob = new Job("job A", "Not cool  Job", 46000);
+      Job secondJob = new Job("Job A", "Not cool job", 46000);
 
       firstJob.Save();
       secondJob.Save();
@@ -152,12 +152,15 @@ namespace JobBoard
       firstJob.SaveWords();
       secondJob.SaveWords();
 
-      Assert.Equal(1,1);
+      List<Job> testJobList = new List<Job> {firstJob, secondJob};
+      List<Job> resultJobList = Job.SearchJobsbyKeyword("job");
+
+      Assert.Equal(testJobList,resultJobList);
     }
 
     public void Dispose()
     {
-      // Job.DeleteAll();
+      Job.DeleteAll();
     }
   }
 }
