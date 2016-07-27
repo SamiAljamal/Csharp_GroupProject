@@ -1,0 +1,10 @@
+@using System.Collections.Generic
+
+<h2>Ranked Jobs</h2>
+
+<ul>
+@foreach(KeyValuePair<Object, int> pair in Model)
+{
+  <li>pair.Key.GetTitle()</li>
+}
+</ul>
