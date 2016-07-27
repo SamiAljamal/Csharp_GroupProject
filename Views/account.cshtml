@@ -25,13 +25,15 @@
     </h2>
     <h2>Resume<input type="text" name="account-resume" class="form-control"></h2>
     <h2>Username<input type="text" name="account-username" class="form-control"></h2>
-    <h2>Password<input type="password" name="account-password" class="form-control"></h2>
     <button type="submit" class="btn btn-success">Update Account</button>
   </form>
   <form class="form-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/deleted" method="post">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
   </form>
+
+  <a href="/accounts/@Model.GetId()/rankedjobs">Get a list of recommended jobs</a>
+
   <a href="/"><h1>Back Home</h1></a>
   <a href="/jobs"><h1>Jobs</h1></a>
 </body>

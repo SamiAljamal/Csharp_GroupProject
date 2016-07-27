@@ -94,10 +94,32 @@ namespace JobBoard
 
       Assert.Equal(allcourses, Keyword.GetAll());
     }
-    
+
+    [Fact]
+    public void Test_GetJobs_ReturnsRankedListOfJobs()
+    {
+      Job firstJob = new Job("Ruby Job", "Know Ruby and Javascript", 45000, 1, 1);
+      Job secondJob = new Job("Javascript Job", "Know Javascript and Javascript frameworks", 45000, 1, 1);
+      Job thirdJob = new Job("Logger", "Cut down trees. Beard is a must, employee responsible for own flannel", 45000, 1, 1);
+      firstJob.Save();
+      secondJob.Save();
+      firstJob.SaveWords();
+      secondJob.SaveWords();
+      thirdJob.SaveWords();
+
+      int keywordId = Keyword.KeywordSearch("Javascript");
+      Keyword testKeyword = new Keyword("Javascript", keywordId);
+
+      Dictionary<int, int> resultJobs = testKeyword.GetJobs();
+      Dictionary<int, int> expectedJobs = new Dictionary<int, int> {{secondJob.GetId(), 2}, {firstJob.GetId(), 1}};
+
+      Assert.Equal(expectedJobs, resultJobs);
+    }
+
     public void Dispose()
     {
       Keyword.DeleteAll();
+      Job.DeleteAll();
     }
   }
 }

@@ -13,6 +13,15 @@
         <li>@word.Key : @word.Value</li>
       }
     </ul>
+
+    <hr>
+
+    <ul>
+      @foreach(var word in Model.CompoundWordCount())
+      {
+        <li>@word.Key : @word.Value</li>
+      }
+    </ul>
     <a href="/">Home</a>
   </body>
 </html>

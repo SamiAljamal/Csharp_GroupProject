@@ -195,5 +195,71 @@ namespace JobBoard
       SqlCommand cmd = new SqlCommand("DELETE FROM keywords;", conn);
       cmd.ExecuteNonQuery();
     }
+    public Dictionary<int, int> GetJobs()
+    {
+      Dictionary<int, int> matchedJobs = new Dictionary<int, int>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM jobs_keywords WHERE keyword_id = @KeywordId;", conn);
+
+      SqlParameter keywordIdParameter = new SqlParameter();
+      keywordIdParameter.ParameterName = "@KeywordId";
+      keywordIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(keywordIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int jobId = rdr.GetInt32(1);
+        int numberOfRepeats = rdr.GetInt32(3);
+        matchedJobs.Add(jobId, numberOfRepeats);
+      }
+      if (rdr != null) rdr.Close();
+      if (conn != null) conn.Close();
+      Dictionary<int, int> rankedJobs = new Dictionary<int, int>();
+      var sorted = from pair in matchedJobs orderby pair.Value descending select pair;
+      int count=0;
+      foreach (KeyValuePair<int, int> pair in sorted)
+      {
+        if(count<20)
+        {
+          rankedJobs.Add(pair.Key, pair.Value);
+        }
+        count++;
+      }
+      return rankedJobs;
+    }
+
+    public static int KeywordSearch(string searchString)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlDataReader rdr = null;
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM keywords WHERE word = @KeywordName;", conn);
+
+      SqlParameter keywordNameParameter = new SqlParameter();
+      keywordNameParameter.ParameterName = "@KeywordName";
+      keywordNameParameter.Value = searchString.ToLower();
+
+      cmd.Parameters.Add(keywordNameParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      int keywordId = -1;
+
+      while(rdr.Read())
+      {
+        keywordId = rdr.GetInt32(0);
+      }
+      if (rdr != null) rdr.Close();
+      if (conn != null) conn.Close();
+      return keywordId;
+    }
   }
 }

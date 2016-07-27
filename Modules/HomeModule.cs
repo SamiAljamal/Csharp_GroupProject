@@ -25,15 +25,14 @@ namespace JobBoard
           Request.Form ["account-phone"],
           Request.Form ["account-education"],
           Request.Form ["account-resume"],
-          Request.Form ["account-username"],
-          Request.Form ["account-password"]
+          Request.Form ["account-username"]
         );
         newAccount.Save();
         return View ["accounts.cshtml", Account.GetAll()];
       };
 
       Post["/keyword"]=_=>{
-        Job newJob = new Job(Request.Form["title"], Request.Form["description"], Request.Form["salary"], Request.Form["company-id"], Request.Form["category-id"]);
+        Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], 1, 1);
         newJob.Save();
         return View["result.cshtml", newJob];
       };
@@ -52,8 +51,7 @@ namespace JobBoard
         Request.Form ["account-phone"],
         Request.Form ["account-education"],
         Request.Form ["account-resume"],
-        Request.Form ["account-username"],
-        Request.Form ["account-password"]
+        Request.Form ["account-username"]
         );
         return View ["account.cshtml", selectedAccount];
       };
@@ -156,6 +154,11 @@ namespace JobBoard
         Category selectedCategory = Category.Find(parameters.id);
         selectedCategory.Delete();
         return View ["deleted_category.cshtml", selectedCategory];
+
+      Get ["/accounts/{id}/rankedjobs"] = parameters => {
+        Account selectedAccount = Account.Find(parameters.id);
+        Dictionary<Job, int> rankedJobs = selectedAccount.GetRankedJobs();
+        return View ["ranked.cshtml", rankedJobs];
       };
     }
   }
