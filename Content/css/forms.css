@@ -63,3 +63,16 @@ option {
   font-size: 30px;
   margin-top: 100px;
 }
+
+.jumbotron .btn-success:hover {
+  background-color: green;
+}
+
+#accounts-list ul {
+  list-style: none;
+  text-align: center;
+}
+
+#accounts-list a {
+  font-size: 18pt;
+}

@@ -20,37 +20,46 @@
       </ul>
     </div>
   </nav>
-  <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
-  <h2>Here are all the jobs we recommend for you:</h2>
-  <h2>Update Your Information</h2>
-  <!-- Maybe put the update form in a modal? -->
-  <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
-    <input type="hidden" name="_method" value="PATCH">
-    <h2>First Name<input type="text" name="account-first-name" class="form-control"></h2>
-    <h2>Last Name<input type="text" name="account-last-name" class="form-control"></h2>
-    <h2>Email<input type="text" name="account-email" class="form-control"></h2>
-    <h2>Phone<input type="text" name="account-phone" class="form-control"></h2>
-    <h2>Education
-      <select class="form-control" name="account-education">
-        <option value="1">High School Degree</option>
-        <option value="2">Some College</option>
-        <option value="3">Associate's Degree</option>
-        <option value="4">Bachelor's Degree</option>
-        <option value="5">Master's Degree</option>
-        <option value="6">Ph.D</option>
-      </select>
-    </h2>
-    <h2>Resume<input type="text" name="account-resume" class="form-control"></h2>
-    <h2>Username<input type="text" name="account-username" class="form-control"></h2>
-    <button type="submit" class="btn btn-success">Update Account</button>
-  </form>
-  <form class="form-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/deleted" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
-  </form>
-
-  <a href="/accounts/@Model.GetId()/rankedjobs">Get a list of recommended jobs</a>
-
-  <a href="/"><h1>Back Home</h1></a>
-  <a href="/jobs"><h1>Jobs</h1></a>
+  <div class="jumbotron">
+    <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
+    <h2 class="h2-headers">Here are all the jobs we recommend for you:</h2>
+    <h2 class="h2-headers">Update Your Information</h2>
+    <!-- Maybe put the update form in a modal? -->
+    <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      <div class="row">
+        <h2 class="col-xs-6">First Name<input type="text" name="account-first-name" class="form-control"></h2>
+        <h2 class="col-xs-6">Last Name<input type="text" name="account-last-name" class="form-control"></h2>
+      </div>
+      <div class="row">
+        <h2 class="col-xs-6">Email<input type="text" name="account-email" class="form-control"></h2>
+        <h2 class="col-xs-6">Phone<input type="text" name="account-phone" class="form-control"></h2>
+      </div>
+      <h2>Education
+        <select class="form-control" name="account-education">
+          <option value="1">High School Degree</option>
+          <option value="2">Some College</option>
+          <option value="3">Associate's Degree</option>
+          <option value="4">Bachelor's Degree</option>
+          <option value="5">Master's Degree</option>
+          <option value="6">Ph.D</option>
+        </select>
+      </h2>
+      <h2>Resume<input type="text" name="account-resume" class="form-control"></h2>
+      <div class="row">
+        <h2 class="col-xs-6">Username<input type="text" name="account-username" class="form-control"></h2>
+        <!-- <h2 class="col-xs-6">Password<input type="password" name="account-password" class="form-control"></h2> -->
+      </div>
+      <button type="submit" class="btn btn-success">Update Account</button>
+    </form>
+    <form class="form-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/deleted" method="post">
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
+    </form>
+    <div class="row">
+      <a href="/" class="btn btn-primary col-xs-6" role="button">Create a Keyword</a>
+      <a href="/" class="btn btn-primary col-xs-6" role="button">View Job Matches By Resume</a>
+    </div>
+    <!-- <h2><a href="/accounts/@Model.GetId()/rankedjobs">Get a list of recommended jobs</a></h2> -->
+  </div>
 </body>
