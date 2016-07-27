@@ -154,7 +154,7 @@ namespace JobBoard
         Category selectedCategory = Category.Find(parameters.id);
         selectedCategory.Delete();
         return View ["deleted_category.cshtml", selectedCategory];
-
+      };
       Get ["/accounts/{id}/rankedjobs"] = parameters => {
         Account selectedAccount = Account.Find(parameters.id);
         Dictionary<Job, int> rankedJobs = selectedAccount.GetRankedJobs();

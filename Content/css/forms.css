@@ -46,6 +46,14 @@ form {
   margin-right: 100px;
 }
 
+input, textarea, select {
+  margin-top: 15px;
+}
+
+option {
+  color: #000000;
+}
+
 .jumbotron .btn-success{
   background: rgba(0,0,0,0.25);
   width: 350px;
