@@ -53,6 +53,21 @@ namespace JobBoard
     }
 
     [Fact]
+    public void Test_FindByUsername_ReturnsAccountUsername()
+    {
+      Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.", "jdoe");
+      testAccount.Save();
+
+      Account foundAccount = Account.FindUser(testAccount.GetUsername());
+      Console.WriteLine(foundAccount.GetUsername());
+      Console.WriteLine(testAccount.GetUsername());
+
+
+      Assert.Equal(testAccount,foundAccount);
+
+    }
+
+    [Fact]
     public void Test_Update_UpdatesAccountInDatabase()
     {
       Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.", "jdoe");

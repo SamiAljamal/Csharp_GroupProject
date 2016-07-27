@@ -251,6 +251,46 @@ namespace JobBoard
       return foundAccounts[0];
     }
 
+    public static Account FindUser(string username)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM accounts WHERE username = @AccountUserName;", conn);
+      SqlParameter accountUserNameParameter = new SqlParameter();
+      accountUserNameParameter.ParameterName = "@AccountUserName";
+      accountUserNameParameter.Value =username;
+      cmd.Parameters.Add(accountUserNameParameter);
+      rdr = cmd.ExecuteReader();
+
+      List<Account> foundAccounts = new List<Account>{};
+
+      while(rdr.Read())
+      {
+        int foundAccountId = rdr.GetInt32(0);
+        string foundAccountFirstName = rdr.GetString(1);
+        string foundAccountLastName = rdr.GetString(2);
+        string foundAccountEmail = rdr.GetString(3);
+        string foundAccountPhone = rdr.GetString(4);
+        int foundAccountEducation = rdr.GetInt32(5);
+        string foundAccountResume = rdr.GetString(6);
+        string foundAccountUsername = rdr.GetString(7);
+        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountUsername, foundAccountId);
+        foundAccounts.Add(foundAccount);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundAccounts[0];
+    }
+
     public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume, string newUsername)
     {
       SqlConnection conn = DB.Connection();
