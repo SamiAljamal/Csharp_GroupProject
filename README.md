@@ -6,7 +6,7 @@
 
 ## Description
 
-Longer succinct description of program.
+This program will allow a user to create an account to search for jobs in the database. The user can search for jobs by the company or category the jobs are under, search for the top keywords in a job description, and compare their resume to job descriptions. This program also allows companies to create profiles and add jobs to their profile.
 
 ## Setup/Installation Requirements
 
@@ -36,9 +36,52 @@ This program can only be accessed on a PC with Windows 10, and with Git, Atom, a
 To build the databases from scratch, type the commands below in the Windows PowerShell:
   * Desktop> SQLCMD -S "Server-Name";
     * 1> CREATE DATABASE job_board;
-    * 2> GO
-    * 3> USE job_board;
-    * 4> GO
+    * GO
+    * USE job_board;
+    * GO
+    * CREATE TABLE accounts
+    * (
+    * id INT IDENTITY(1,1),
+    * first_name VARCHAR(355),
+    * last_name VARCHAR(355),
+    * email VARCHAR(255),
+    * phone VARCHAR(255),
+    * education INT,
+    * resume VARCHAR(5000),
+    * username VARCHAR(255)  
+    * );
+    * CREATE TABLE categories
+    * (
+    * id INT IDENTITY(1,1),
+    * name VARCHAR(255)
+    * );
+    * CREATE TABLE companies
+    * (
+    * id INT IDENTITY(1,1),
+    * name VARCHAR(255)
+    * );
+    * CREATE TABLE jobs
+    * (
+    * id INT IDENTITY(1,1),
+    * title VARCHAR(255),
+    * description VARCHAR(5000),
+    * salary INT,
+    * company_id INT,
+    * category_id INT
+    * );
+    * CREATE TABLE keywords
+    * (
+    * id INT IDENTITY(1,1),
+    * word VARCHAR(255)
+    * );
+    * CREATE TABLE jobs_keywords
+    * (
+    * id INT IDENTITY(1,1),
+    * job_id INT,
+    * keyword_id INT,
+    * number_of_repeats INT,
+    * );
+    * GO
   * Exit out of SQLCMD by typing> QUIT
   * Open SSMS, click open Databases folder and check that the job_board database has been created
   * Click "New Query" button on top nav bar (above "!Execute")
@@ -61,15 +104,16 @@ The program should ... | Example Input | Example Output
 ----- | ----- | -----
 Have CRUD functionality for an account | --- | ---
 Have CRUD functionality for a job listing | --- | ---
-Have CRUD functionality for company profile | --- | ---
+Have CRUD functionality for a company profile | --- | ---
 Have CRUD functionality for a category of jobs | --- | ---
-Create a keywords list with the most common words used in a job description | --- | ---
 View all jobs in a company | --- | ---
 View all jobs in a category | --- | ---
-View all jobs in a company that contain a keyword | --- | ---
-View all jobs in a category that contain a keyword | --- | ---
-View list of top keywords for a company | --- | ---
-View list of top keywords for a category | --- | ---
+View all jobs most suited to an account's profile/resume | --- | ---
+Create a keywords list with the most common words used in a job description | --- | ---
+View all jobs in a company that contain a specific keyword | --- | ---
+View all jobs in a category that contain a specific keyword | --- | ---
+View a list of top keywords for a company | --- | ---
+View a list of top keywords for a category | --- | ---
 
 ## Future Features
 
@@ -90,7 +134,7 @@ Contact Epicodus for support in running this program.
 
 ## Links
 
-Git Hub Repository: https://github.com/
+Git Hub Repository: https://github.com/SamiAljamal/Csharp_GroupProject
 
 ## License
 
