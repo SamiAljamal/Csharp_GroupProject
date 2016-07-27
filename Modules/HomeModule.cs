@@ -9,13 +9,14 @@ namespace JobBoard
     public HomeModule()
     {
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
-      Get ["/login"] = _ => View ["login.cshtml"];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
-
       Get ["/accounts"] = _ => {
         return View ["accounts.cshtml", Account.GetAll()];
       };
-
+      Post ["/login"] = _ => {
+        Account loggedAccount = Account.Find(Request.Form ["username"]);
+        return View ["account.cshtml", loggedAccount];
+      };
       Post ["/accounts"] = _ => {
         Account newAccount = new Account
         (
@@ -30,13 +31,11 @@ namespace JobBoard
         newAccount.Save();
         return View ["accounts.cshtml", Account.GetAll()];
       };
-
       Post["/keyword"]=_=>{
         Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], 1, 1);
         newJob.Save();
         return View["result.cshtml", newJob];
       };
-
       Get ["/accounts/{id}/{first_name}"] = parameters => {
         Account selectedAccount = Account.Find(parameters.id);
         return View ["account.cshtml", selectedAccount];
@@ -63,7 +62,6 @@ namespace JobBoard
       Get ["/jobs"] = _ => {
         return View ["jobs.cshtml", Job.GetAll()];
       };
-
       Get ["/jobs/new"] = _ =>{
         Dictionary<string, object> model = new   Dictionary<string, object> {};
         List<Company> allCompanies = Company.GetAll();
@@ -72,7 +70,6 @@ namespace JobBoard
         model.Add("allCategories", allCategories);
         return View ["job_form.cshtml", model];
       };
-
       Post ["/jobs"] = _ => {
         Job newJob = new Job
         (
@@ -106,7 +103,6 @@ namespace JobBoard
         selectedJob.Delete();
         return View ["deleted_job.cshtml", selectedJob];
       };
-
       Get ["/companies"] = _ => {
         return View ["companies.cshtml", Company.GetAll()];
       };
@@ -131,7 +127,6 @@ namespace JobBoard
         selectedCompany.Delete();
         return View ["deleted_company.cshtml", selectedCompany];
       };
-
       Get ["/categories"] = _ => {
         return View ["categories.cshtml", Category.GetAll()];
       };

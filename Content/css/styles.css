@@ -82,4 +82,9 @@ h1 {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  color: #000000;
+}
+
+input:focus {
+  color: #000000;
 }
