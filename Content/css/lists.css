@@ -60,11 +60,11 @@ option {
   margin-top: 35px;
 }
 
-#accounts-list ul {
+.jumbotron ul {
   list-style: none;
   text-align: center;
 }
 
-#accounts-list a {
+.jumbotron a {
   font-size: 18pt;
 }
