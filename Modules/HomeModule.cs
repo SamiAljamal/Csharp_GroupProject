@@ -8,6 +8,7 @@ namespace JobBoard
     public HomeModule()
     {
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
+      Get ["/login"] = _ => View ["login.cshtml"];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
 
       Get ["/accounts"] = _ => {

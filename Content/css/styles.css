@@ -18,12 +18,13 @@ body {
   background: rgba(0,0,0,0.25);
   border: rgba(0,0,0,0.25);
 }
+
 .navbar-inverse a {
   padding-top: 35px;
   font-size: 18pt;
 }
 
-.jumbotron {
+.index-jumbotron {
   background: rgba(0,0,0,0.25);
   color: #FFFFFF;
   padding-left: 200px;
@@ -32,11 +33,12 @@ body {
   margin-right: 75px;
   margin-left: 75px;
 }
+
 h1 {
   text-align: center;
 }
 
-.btn-success{
+.index-jumbotron .btn-success{
   background: rgba(0,0,0,0.25);
   width: 250px;
   display: block;
@@ -44,4 +46,32 @@ h1 {
   margin-right: auto;
   font-size: 50px;
   margin-top: 100px;
+}
+
+.login-jumbotron {
+  background: rgba(0,0,0,0.25);
+  color: #FFFFFF;
+  width: 625px;
+  padding-left: 200px;
+  padding-right: 200px;
+  margin-top: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-jumbotron .btn-success{
+  background: rgba(0,0,0,0.25);
+  width: 250px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 30px;
+  margin-top: 100px;
+}
+
+.login-jumbotron input {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
