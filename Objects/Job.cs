@@ -351,8 +351,11 @@ namespace JobBoard
       string jobDescription = this.GetDescription().ToLower() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
       string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
+      Regex noncharacter = new Regex(@"^[A-Za-z0-9]+");
+      string mistranslatedCharsRemoved = noncharacter.Replace(trimmedJobDescription, "");
+
       Regex whitespace = new Regex(@"\s+");
-      string[] wordList = whitespace.Split(trimmedJobDescription);
+      string[] wordList = whitespace.Split(mistranslatedCharsRemoved);
       for(int i=0; i < wordList.Length-2; i++)
       {
         // if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))

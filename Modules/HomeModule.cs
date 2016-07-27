@@ -200,6 +200,15 @@ namespace JobBoard
         Dictionary<Job, int> rankedJobs = selectedAccount.GetRankedJobs();
         return View ["ranked.cshtml", rankedJobs];
       };
+
+      Delete["/deleteall"]=_=> {
+        Account.DeleteAll();
+        Category.DeleteAll();
+        Company.DeleteAll();
+        Job.DeleteAll();
+        Keyword.DeleteAll();
+        return View ["index.cshtml"];
+      };
     }
   }
 }

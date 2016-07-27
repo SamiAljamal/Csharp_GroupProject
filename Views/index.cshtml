@@ -29,5 +29,10 @@
     <a href="/jobs" class="btn btn-success" role="button">View Jobs</a>
     <a href="/jobs/new" class="btn btn-success" role="button">Add Job</a>
     <a href="/categories/new" class="btn btn-success" role="button">Add a Category</a>
+
+    <form action="/deleteall" method="post">
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" name="button">DELETE EVERYTHING</button>
+    </form>
   </div>
 </body>
