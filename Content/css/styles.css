@@ -22,3 +22,26 @@ body {
   padding-top: 35px;
   font-size: 18pt;
 }
+
+.jumbotron {
+  background: rgba(0,0,0,0.25);
+  color: #FFFFFF;
+  padding-left: 200px;
+  padding-right: 200px;
+  margin-top: 300px;
+  margin-right: 75px;
+  margin-left: 75px;
+}
+h1 {
+  text-align: center;
+}
+
+.btn-success{
+  background: rgba(0,0,0,0.25);
+  width: 250px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 50px;
+  margin-top: 100px;
+}
