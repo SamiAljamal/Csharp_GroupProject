@@ -29,7 +29,7 @@ body {
   color: #FFFFFF;
   margin-left: 100px;
   margin-right: 100px;
-    margin-top: 75px;
+  margin-top: 75px;
 }
 
 .jumbotron h1 {
@@ -44,6 +44,7 @@ body {
 form {
   margin-left: 100px;
   margin-right: 100px;
+  margin-top: 50px;
 }
 
 input, textarea, select {
@@ -54,16 +55,16 @@ option {
   color: #000000;
 }
 
-.jumbotron .btn-success{
-  background: rgba(0,0,0,0.25);
-  width: 350px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 30px;
-  margin-top: 100px;
+.h2-headers {
+  text-align: center;
+  margin-top: 35px;
 }
 
-.jumbotron .btn-success:hover {
-  background-color: green;
+#accounts-list ul {
+  list-style: none;
+  text-align: center;
+}
+
+#accounts-list a {
+  font-size: 18pt;
 }
