@@ -312,49 +312,64 @@ namespace JobBoard
     {
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
       List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
-      List<char> punctuation = new List<char>{'!', '?', ',', '.', ':', ';'};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
-      string jobDescription = this.GetDescription() + " ";
-      string trimmedJobDescription = Regex.Replace(jobDescription, @" [\(]", " ");
+      string jobDescription = this.GetDescription().ToLower() + " ";
+      string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+      string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
       Regex whitespace = new Regex(@"\s+");
-
       string[] wordList = whitespace.Split(trimmedJobDescription);
-
-      Dictionary<string, int> items = new Dictionary<string, int>();
-
       for(int i=0; i < wordList.Length-1; i++)
       {
-        if(!prepositions.Contains(wordList[i].ToLower()) && !commonWords.Contains(wordList[i].ToLower()))
+        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
         {
           int count=0;
-          if (char.IsUpper(wordList[i][0]) && char.IsUpper(wordList[i+1][0]) && !punctuation.Contains(wordList[i][(wordList[i].Length-1)]))
+          if(!UniqueWords.ContainsKey(wordList[i]))
           {
-            if(!UniqueWords.ContainsKey((wordList[i] + " " + wordList[i+1])))
+            for(int j = i; j < wordList.Length-1; j++)
             {
-              for(int j = i; j < wordList.Length-1; j++)
-              {
-                if((wordList[i] + " " + wordList[i+1]) == (wordList[j] + " " + wordList[j+1])) count+=1;
-              }
-              UniqueWords.Add((wordList[i] + " " + wordList[i+1]), count);
-              wordList[i] = null;
-              wordList[i+1] = null;
-              i++;
-            }
-          }
-          else if(!UniqueWords.ContainsKey(Regex.Replace(wordList[i], @"[\.,\,,\?,\!,\),\;,\:]", "")))
-          {
-            {
-              for(int j = i; j < wordList.Length-1; j++)
-              {
-                wordList[i] = Regex.Replace(wordList[i], @"[\.,\,,\?,\!,\),\;,\:]", "");
-                if(wordList[i]==wordList[j]) count+=1;
-              }
+              if(wordList[i]==wordList[j]) count+=1;
             }
             UniqueWords.Add(wordList[i], count);
           }
         }
       }
+      Dictionary<string, int> items = new Dictionary<string, int>();
       var sorted = from pair in UniqueWords orderby pair.Value descending select pair;
+      foreach (KeyValuePair<string, int> pair in sorted)
+      {
+        items.Add(pair.Key, pair.Value);
+      }
+
+      return items;
+    }
+
+    public Dictionary<string, int> CompoundWordCount()
+    {
+      List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
+      Dictionary<string, int> compoundWords = new Dictionary<string, int>{};
+      string jobDescription = this.GetDescription().ToLower() + " ";
+      string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+      string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
+      Regex whitespace = new Regex(@"\s+");
+      string[] wordList = whitespace.Split(trimmedJobDescription);
+      for(int i=0; i < wordList.Length-2; i++)
+      {
+        // if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
+        // {
+        // }
+        int count = 0;
+        if(!compoundWords.ContainsKey(wordList[i] + " " + wordList[i+1]))
+        {
+          for(int j = i; j < wordList.Length-1; j++)
+          {
+            if(wordList[i] + " " + wordList[i+1] == wordList[j] + " " + wordList[j+1]) count+=1;
+          }
+          compoundWords.Add(wordList[i] + " " + wordList[i+1], count);
+        }
+      }
+      Dictionary<string, int> items = new Dictionary<string, int>();
+      var sorted = from pair in compoundWords orderby pair.Value descending select pair;
       foreach (KeyValuePair<string, int> pair in sorted)
       {
         items.Add(pair.Key, pair.Value);

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace JobBoard
 {
@@ -14,9 +16,8 @@ namespace JobBoard
     private int _education;
     private string _resume;
     private string _username;
-    private string _password;
 
-    public Account (string firstName, string lastName, string email, string phone, int education, string resume, string username, string password, int id = 0)
+    public Account (string firstName, string lastName, string email, string phone, int education, string resume, string username, int id = 0)
     {
       _id = id;
       _firstName = firstName;
@@ -26,7 +27,7 @@ namespace JobBoard
       _education = education;
       _resume = resume;
       _username = username;
-      _password = password;
+
     }
 
     public override bool Equals(System.Object otherAccount)
@@ -46,8 +47,7 @@ namespace JobBoard
         bool educationEquality = this.GetEducation() == newAccount.GetEducation();
         bool resumeEquality = this.GetResume() == newAccount.GetResume();
         bool usernameEquality = this.GetUsername() == newAccount.GetUsername();
-        bool passwordEquality = this.GetPassword() == newAccount.GetPassword();
-        return (idEquality && firstNameEquality && lastNameEquality && emailEquality && phoneEquality && educationEquality && resumeEquality && usernameEquality && passwordEquality);
+        return (idEquality && firstNameEquality && lastNameEquality && emailEquality && phoneEquality && educationEquality && resumeEquality && usernameEquality);
       }
     }
 
@@ -84,10 +84,6 @@ namespace JobBoard
     {
       return _username;
     }
-    public string GetPassword()
-    {
-      return _password;
-    }
 
     public void SetFirstName(string newFirstName)
     {
@@ -117,10 +113,7 @@ namespace JobBoard
     {
       _username = newUsername;
     }
-    public void SetPassword(string newPassword)
-    {
-      _password = newPassword;
-    }
+
 
     public static List<Account> GetAll()
     {
@@ -143,9 +136,8 @@ namespace JobBoard
         int accountEducation = rdr.GetInt32(5);
         string accountResume = rdr.GetString(6);
         string accountUsername = rdr.GetString(7);
-        string accountPassword = rdr.GetString(8);
 
-        Account newAccount = new Account(accountFirstName, accountLastName, accountEmail, accountPhone, accountEducation, accountResume, accountUsername, accountPassword, accountId);
+        Account newAccount = new Account(accountFirstName, accountLastName, accountEmail, accountPhone, accountEducation, accountResume, accountUsername, accountId);
         allAccounts.Add(newAccount);
       }
 
@@ -166,7 +158,7 @@ namespace JobBoard
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO accounts (first_name, last_name, email, phone, education, resume, username, password) OUTPUT INSERTED.id VALUES (@FirstName, @LastName, @Email, @Phone, @Education, @Resume, @Username, @Password);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO accounts (first_name, last_name, email, phone, education, resume, username) OUTPUT INSERTED.id VALUES (@FirstName, @LastName, @Email, @Phone, @Education, @Resume, @Username);", conn);
 
       SqlParameter firstNameParameter = new SqlParameter();
       firstNameParameter.ParameterName = "@FirstName";
@@ -202,12 +194,6 @@ namespace JobBoard
       usernameParameter.ParameterName = "@Username";
       usernameParameter.Value = this.GetUsername();
       cmd.Parameters.Add(usernameParameter);
-
-      SqlParameter passwordParameter = new SqlParameter();
-      passwordParameter.ParameterName = "@Password";
-      passwordParameter.Value = this.GetPassword();
-      cmd.Parameters.Add(passwordParameter);
-
 
       rdr = cmd.ExecuteReader();
 
@@ -250,8 +236,7 @@ namespace JobBoard
         int foundAccountEducation = rdr.GetInt32(5);
         string foundAccountResume = rdr.GetString(6);
         string foundAccountUsername = rdr.GetString(7);
-        string foundAccountPassword = rdr.GetString(8);
-        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountUsername, foundAccountPassword, foundAccountId);
+        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountUsername, foundAccountId);
         foundAccounts.Add(foundAccount);
       }
 
@@ -266,13 +251,13 @@ namespace JobBoard
       return foundAccounts[0];
     }
 
-    public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume, string newUsername, string newPassword)
+    public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume, string newUsername)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE accounts SET first_name = @NewFirstName, last_name = @NewLastName, email = @NewEmail, phone = @NewPhone, education = @NewEducation, resume = @NewResume, username = @NewUsername, password = @NewPassword OUTPUT INSERTED.first_name, INSERTED.last_name, INSERTED.email, INSERTED.phone, INSERTED.education, INSERTED.resume, INSERTED.username, INSERTED.password WHERE id = @AccountId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE accounts SET first_name = @NewFirstName, last_name = @NewLastName, email = @NewEmail, phone = @NewPhone, education = @NewEducation, resume = @NewResume, username = @NewUsername OUTPUT INSERTED.first_name, INSERTED.last_name, INSERTED.email, INSERTED.phone, INSERTED.education, INSERTED.resume, INSERTED.username WHERE id = @AccountId;", conn);
 
       SqlParameter newFirstNameParameter = new SqlParameter();
       newFirstNameParameter.ParameterName = "@NewFirstName";
@@ -309,11 +294,6 @@ namespace JobBoard
       newUsernameParameter.Value = newUsername;
       cmd.Parameters.Add(newUsernameParameter);
 
-      SqlParameter newPasswordParameter = new SqlParameter();
-      newPasswordParameter.ParameterName = "@NewPassword";
-      newPasswordParameter.Value = newPassword;
-      cmd.Parameters.Add(newPasswordParameter);
-
       SqlParameter accountIdParameter = new SqlParameter();
       accountIdParameter.ParameterName = "@AccountId";
       accountIdParameter.Value = this.GetId();
@@ -330,7 +310,6 @@ namespace JobBoard
         this._education = rdr.GetInt32(4);
         this._resume = rdr.GetString(5);
         this._username = rdr.GetString(6);
-        this._password = rdr.GetString(7);
       }
 
       if (rdr != null)
@@ -362,6 +341,82 @@ namespace JobBoard
       {
         conn.Close();
       }
+    }
+
+    public Dictionary<string, int> UniqueWordCount()
+    {
+      List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
+      Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
+      string resume = this.GetResume().ToLower() + " ";
+      string backTrimmedResume = Regex.Replace(resume, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
+      string trimmedResume = Regex.Replace(backTrimmedResume, @" [\(]", " ");
+      Regex whitespace = new Regex(@"\s+");
+      string[] wordList = whitespace.Split(trimmedResume);
+      for(int i=0; i < wordList.Length-1; i++)
+      {
+        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
+        {
+          int count=0;
+          if(!UniqueWords.ContainsKey(wordList[i]))
+          {
+            for(int j = i; j < wordList.Length-1; j++)
+            {
+              if(wordList[i]==wordList[j]) count+=1;
+            }
+            UniqueWords.Add(wordList[i], count);
+          }
+        }
+      }
+      Dictionary<string, int> items = new Dictionary<string, int>();
+      var sorted = from pair in UniqueWords orderby pair.Value descending select pair;
+      int rank=0;
+      foreach (KeyValuePair<string, int> pair in sorted)
+      {
+        if(rank<10)
+        {
+          items.Add(pair.Key, pair.Value);
+        }
+        rank++;
+      }
+
+      return items;
+    }
+
+    public Dictionary<Job, int> GetRankedJobs()
+    {
+      // Category selectedCategory = Category.Find(categoryId);
+      // List<Job> categoryJobs = selectedCategory.GetJobs();
+
+      Dictionary<string, int> resumeWords = this.UniqueWordCount();
+      Dictionary<int, int> scoredJobs = new Dictionary<int, int>{};
+      foreach (KeyValuePair<string, int> pair in resumeWords)
+      {
+        int keywordId=Keyword.KeywordSearch(pair.Key);
+        if(keywordId!=-1)
+        {
+          Keyword keyword = new Keyword(pair.Key, keywordId);
+          Dictionary<int, int> keywordJobs = keyword.GetJobs();
+          foreach(KeyValuePair<int, int> jobScore in keywordJobs)
+          {
+            if(scoredJobs.ContainsKey(jobScore.Key))
+            {
+              scoredJobs[jobScore.Key]+=(jobScore.Value*pair.Value);
+            }
+            else
+            {
+              scoredJobs.Add(jobScore.Key, jobScore.Value);
+            }
+          }
+        }
+      }
+      Dictionary<Job, int> rankedJobs = new Dictionary<Job, int>();
+      var sorted = from pair in scoredJobs orderby pair.Value descending select pair;
+      foreach (KeyValuePair<int, int> pair in sorted)
+      {
+        rankedJobs.Add(Job.Find(pair.Key), pair.Value);
+      }
+      return rankedJobs;
     }
 
     public static void DeleteAll()

@@ -112,15 +112,15 @@ namespace JobBoard
       Assert.Equal(expectedResult, result);
     }
 
-    [Fact]
-    public void Test_UniqueWordCount_CountsAdjoiningCapitalWordsAsOne()
-    {
-      Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000, 1, 1);
-      testJob.Save();
-      Dictionary<string, int> result = testJob.UniqueWordCount();
-      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 1}, {"job", 2}, {"Cool Person", 1}, {"what", 1}};
-      Assert.Equal(expectedResult, result);
-    }
+    // [Fact]
+    // public void Test_UniqueWordCount_CountsAdjoiningCapitalWordsAsOne()
+    // {
+    //   Job testJob = new Job("Job", "A: cool; job, (for) a Cool Person. what? a job!", 45000, 1, 1);
+    //   testJob.Save();
+    //   Dictionary<string, int> result = testJob.UniqueWordCount();
+    //   Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"cool", 1}, {"job", 2}, {"Cool Person", 1}, {"what", 1}};
+    //   Assert.Equal(expectedResult, result);
+    // }
 
     [Fact]
     public void Test_SaveWords_SavesKeywordtoJobs()
@@ -154,7 +154,19 @@ namespace JobBoard
 
       Assert.Equal(1, 1);
     }
+    [Fact]
+    public void Test_CompoundWordCount_ReturnsDictionaryWithCompoundWordsAndCounts()
+    {
 
+      Job testJob = new Job("Job", "A job, but not cool job", 45000, 1, 1);
+      testJob.Save();
+
+      Dictionary<string, int> result = testJob.CompoundWordCount();
+      Dictionary<string, int> expectedResult = new Dictionary<string, int> {{"a job", 1}, {"job but", 1}, {"but not", 1}, {"not cool", 1}, {"cool job", 1}};
+
+      //Assert
+      Assert.Equal(expectedResult, result);
+    }
     public void Dispose()
     {
       Job.DeleteAll();
