@@ -2,9 +2,23 @@
 *::before,
 *::after {
   font-family: serif;
-  color: #000000;
-  background-color: #FFFFFF;
+  color: #FFFFFF;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
+}
+
+body {
+  background-image: url("../img/Mountain.jpg");
+  background-size: cover;
+}
+
+.navbar-inverse {
+  background-color: #000000;
+  background: rgba(0,0,0,0.25);
+  border: rgba(0,0,0,0.25);
+}
+.navbar-inverse a {
+  padding-top: 35px;
+  font-size: 18pt;
 }
