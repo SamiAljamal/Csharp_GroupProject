@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>@Model["keyword"]</title>
+  </head>
+  <body>
+    <h1>@Model["keyword"]</h1>
+
+    @{
+      double categoryFraction = (double) Model["categoryMatchedJobs"].Count/Model["categoryJobs"].Count;
+      double companyFraction = (double) Model["companyMatchedJobs"].Count/Model["companyJobs"].Count;
+    }
+
+    <p>
+      The word @Model["keyword"] appears in @Model["categoryMatchedJobs"].Count of @Model["categoryJobs"].Count job postings in this category
+    </p>
+
+    <p>
+      The word @Model["keyword"] appears in @Model["companyMatchedJobs"].Count of @Model["companyJobs"].Count job postings in this company
+    </p>
+
+    <a href="/">Home</a>
+  </body>
+</html>

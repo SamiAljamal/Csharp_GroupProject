@@ -1,0 +1,16 @@
+<h2>Here are the keywords for @Model["job"].GetTitle()</h2>
+<h3>Keywords used in this job's category</h3>
+<ul>
+  @foreach(string categoryWord in Model["categoryWords"].Keys)
+  {
+    <li>@categoryWord</li>
+  }
+</ul>
+
+<h3>Keywords used by this job's company</h3>
+<ul>
+  @foreach(string companyWord in Model["companyWords"].Keys)
+  {
+    <li>@companyWord</li>
+  }
+</ul>

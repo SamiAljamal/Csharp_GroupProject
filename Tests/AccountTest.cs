@@ -91,5 +91,24 @@ namespace JobBoard
 
       Assert.Equal(expectedJobs, resultJobs);
     }
+
+    [Fact]
+    public void Test_GetRankedJobs_RanksJobsWithLarge()
+    {
+      Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "I am good at JavaScript and also Javascript", "jdoe");
+      testAccount.Save();
+      Job testJob = new Job("Javascript Job", "You need to be good at JavaScript, JavaScript, and Ruby", 45000, 1, 1);
+      testJob.Save();
+      testJob.SaveWords();
+      Job testJob2 = new Job("Ruby Job", "You need to be good at Ruby", 45000, 1, 1);
+      testJob2.Save();
+      testJob2.SaveWords();
+
+
+      Dictionary<Job, int> expectedJobs = new Dictionary<Job, int>{};
+      Dictionary<Job, int> resultJobs = testAccount.GetRankedJobs();
+
+      Assert.Equal(expectedJobs, resultJobs);
+    }
   }
 }
