@@ -1,8 +1,25 @@
 <head>
   <link rel="stylesheet" href="/Content/css/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
+  <link rel="stylesheet" href="/Content/css/singular-view.css" type="text/css">
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script type="text/javascript" src="/Content/js/bootstrap.js"></script>
 </head>
 <body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/accounts/new">Create Account</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/login">Login</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
   <h2>Here are all the jobs we recommend for you:</h2>
   <h2>Update Your Information</h2>
