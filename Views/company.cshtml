@@ -30,17 +30,17 @@
   </nav>
   <div class="jumbotron">
     <h1>@Model.GetName()</h1>
-    <h2>View All Jobs In Company</h2>
+    <h2 class="h2-headers">View All Jobs In Company</h2>
     @foreach (var job in Model.GetJobs())
     {
       <ul>
         <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
       </ul>
     }
-    <h2>Update Your Company</h2>
+    <h2 class="h2-headers">Update Your Company</h2>
     <form class="from-group" action="/companies/@Model.GetId()/@Model.GetName()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
-      <h2>Name<input type="text" name="company-name" class="form-control"></h2>
+      <h2>Name<input type="text" name="company-name" class="form-control" id="last-input"></h2>
       <button type="submit" class="btn btn-success">Update Company</button>
     </form>
     <form class="form-group" action="/companies/@Model.GetId()/@Model.GetName()/deleted" method="post">

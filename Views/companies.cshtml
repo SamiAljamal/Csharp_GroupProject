@@ -33,7 +33,7 @@
     @foreach (var company in Model)
     {
       <ul>
-        <li><a href="/companies/@company.GetId()/@company.GetName()">@company.GetName()</a></li>
+        <li><a href="/companies/@company.GetId()/@company.GetName()" id="list-names">@company.GetName()</a></li>
       </ul>
     }
     <a href="/companies/new" class="btn btn-success" role="button">Create New Company</a>
