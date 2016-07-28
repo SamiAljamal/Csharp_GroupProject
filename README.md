@@ -108,12 +108,13 @@ Have CRUD functionality for a company profile | --- | ---
 Have CRUD functionality for a category of jobs | --- | ---
 View all jobs in a company | --- | ---
 View all jobs in a category | --- | ---
-View all jobs most suited to an account's profile/resume | --- | ---
+Allow user to log into their account by a custom username | --- | ---
+View all jobs most suited to an account's resume | --- | ---
 Create a keywords list with the most common words used in a job description | --- | ---
+View a list of top keywords for a job's company | --- | ---
+View a list of top keywords for a job's category | --- | ---
 View all jobs in a company that contain a specific keyword | --- | ---
 View all jobs in a category that contain a specific keyword | --- | ---
-View a list of top keywords for a company | --- | ---
-View a list of top keywords for a category | --- | ---
 
 ## Future Features
 
