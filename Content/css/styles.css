@@ -1,6 +1,4 @@
-*,
-*::before,
-*::after {
+* {
   font-family: serif;
   color: #FFFFFF;
   -webkit-box-sizing: border-box;
@@ -94,4 +92,11 @@ h1 {
 
 input:focus {
   color: #000000;
+}
+
+.glyphicon-user {
+  font-size: 100pt;
+  display: block;
+  text-align: center;
+  margin-bottom: 30px;
 }
