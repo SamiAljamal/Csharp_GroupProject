@@ -51,20 +51,16 @@ namespace JobBoard
       int result = savedCategory.GetId();
       int testId = testCategory.GetId();
 
-      //Assert
       Assert.Equal(testId, result);
     }
     [Fact]
     public void Test_Find_FindsCategoryInDatabase()
     {
-      //Arrange
       Category testCategory = new Category("Category");
       testCategory.Save();
 
-      //Act
       Category foundCategory = Category.Find(testCategory.GetId());
 
-      //Assert
       Assert.Equal(testCategory, foundCategory);
     }
 
@@ -171,6 +167,8 @@ namespace JobBoard
     {
       Category.DeleteAll();
       Keyword.DeleteAll();
+      Job.DeleteAll();
+      Company.DeleteAll();
     }
   }
 }

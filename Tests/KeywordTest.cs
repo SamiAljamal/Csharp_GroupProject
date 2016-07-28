@@ -51,20 +51,16 @@ namespace JobBoard
       int result = savedKeyword.GetId();
       int testId = testKeyword.GetId();
 
-      //Assert
       Assert.Equal(testId, result);
     }
     [Fact]
     public void Test_Find_FindsKeywordInDatabase()
     {
-      //Arrange
       Keyword testKeyword = new Keyword("Keyword");
       testKeyword.Save();
 
-      //Act
       Keyword foundKeyword = Keyword.Find(testKeyword.GetId());
 
-      //Assert
       Assert.Equal(testKeyword, foundKeyword);
     }
 

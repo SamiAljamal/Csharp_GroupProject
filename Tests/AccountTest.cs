@@ -12,12 +12,6 @@ namespace JobBoard
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=job_board_test;Integrated Security=SSPI;";
     }
-    public void Dispose()
-    {
-      Account.DeleteAll();
-      Job.DeleteAll();
-      Keyword.DeleteAll();
-    }
 
     [Fact]
     public void Test_GetAll_ReturnsZeroWhenDatabaseEmpty()
@@ -85,6 +79,7 @@ namespace JobBoard
       testAccount.DeleteOne();
       Assert.Equal(testAccounts, Account.GetAll());
     }
+
     // [Fact]
     // public void Test_GetRankedJobs_RanksJobsBasedOnKeywordMatchesInResumeAndDescriptions()
     // {
@@ -98,7 +93,7 @@ namespace JobBoard
     //   testJob2.SaveWords();
     //
     //
-    //   Dictionary<Job, int> expectedJobs = new Dictionary<Job, int>{};
+    //   Dictionary<Job, int> expectedJobs = new Dictionary<Job, int>{{testJob, 3}, {testJob2, 1}};
     //   Dictionary<Job, int> resultJobs = testAccount.GetRankedJobs();
     //
     //   Assert.Equal(expectedJobs, resultJobs);
@@ -122,5 +117,12 @@ namespace JobBoard
     //
     //   Assert.Equal(expectedJobs, resultJobs);
     // }
+
+    public void Dispose()
+    {
+      Account.DeleteAll();
+      Job.DeleteAll();
+      Keyword.DeleteAll();
+    }
   }
 }

@@ -162,6 +162,7 @@ namespace JobBoard
       Company.DeleteAll();
       Job.DeleteAll();
       Keyword.DeleteAll();
+      Category.DeleteAll();
     }
   }
 }

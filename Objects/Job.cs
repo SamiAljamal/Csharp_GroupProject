@@ -435,7 +435,10 @@ namespace JobBoard
 
         cmd3.ExecuteNonQuery();
 
-        if (conn != null) conn.Close();
+        if (conn != null)
+        {
+          conn.Close();
+        }
       }
     }
 
