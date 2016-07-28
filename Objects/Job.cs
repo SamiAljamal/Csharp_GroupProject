@@ -17,8 +17,8 @@ namespace JobBoard
 
     public Job(string title, string description, int salary, int companyId, int categoryId, int id=0)
     {
-      _title = title;
-      _description = description;
+      _title = title.Trim();
+      _description = description.Trim();
       _salary = salary;
       _companyId = companyId;
       _categoryId = categoryId;
@@ -235,9 +235,8 @@ namespace JobBoard
         newDescription = this.GetDescription();
       }
 
-
-      this.SetDescription(newDescription);
-      this.SetTitle(newTitle);
+      this.SetDescription(newDescription.Trim());
+      this.SetTitle(newTitle.Trim());
       this.SetSalary(newSalary);
       this.SetCompanyId(newCompanyId);
       this.SetCategoryId(newCategoryId);
@@ -246,12 +245,12 @@ namespace JobBoard
 
       SqlParameter newTitleParameter = new SqlParameter();
       newTitleParameter.ParameterName = "@NewTitle";
-      newTitleParameter.Value = newTitle;
+      newTitleParameter.Value = newTitle.Trim();
       cmd.Parameters.Add(newTitleParameter);
 
       SqlParameter newDescriptionParameter = new SqlParameter();
       newDescriptionParameter.ParameterName = "@NewDescription";
-      newDescriptionParameter.Value = newDescription;
+      newDescriptionParameter.Value = newDescription.Trim();
       cmd.Parameters.Add(newDescriptionParameter);
 
       SqlParameter newSalaryParameter = new SqlParameter();
@@ -311,7 +310,7 @@ namespace JobBoard
     public Dictionary<string, int> UniqueWordCount()
     {
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
-      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such","each"};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
       string jobDescription = this.GetDescription() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
@@ -332,8 +331,11 @@ namespace JobBoard
             {
               if(wordList[i]==wordList[j]) count+=1;
             }
-            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
-            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+            if (noPuncWord.Length > 1)
+            {
+              if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+              if(Char.IsUpper(noPuncWord[0]) && !Char.IsUpper(noPuncWord[1])) count *= 2;
+            }
             UniqueWords.Add(wordList[i].ToLower(), count);
           }
         }
@@ -351,7 +353,7 @@ namespace JobBoard
     public Dictionary<string, int> CompoundWordCount()
     {
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
-      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such","each"};
       Dictionary<string, int> compoundWords = new Dictionary<string, int>{};
       string jobDescription = this.GetDescription() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");

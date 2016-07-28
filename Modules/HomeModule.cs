@@ -12,7 +12,7 @@ namespace JobBoard
       Get ["/login"] = _ => View ["login.cshtml", Account.GetAll()];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
       Post ["/login"] = _ => {
-        int userId = Account.FindUserId(Request.Form ["username"]);
+        int userId = Request.Form ["username"];
         if(userId==-1)
         {
           return View ["user_not_found.cshtml"];
@@ -64,8 +64,8 @@ namespace JobBoard
         Category selectedCategory = Category.Find(selectedJob.GetCategoryId());
         Company selectedCompany = Company.Find(selectedJob.GetCompanyId());
 
-        Dictionary<string, int> categoryWords = selectedCategory.GetPopularWords(40);
-        Dictionary<string, int> companyWords = selectedCompany.GetPopularWords(40);
+        Dictionary<string, int> categoryWords = selectedCategory.GetPopularWords(20);
+        Dictionary<string, int> companyWords = selectedCompany.GetPopularWords(20);
 
         model.Add("categoryWords", categoryWords);
         model.Add("companyWords", companyWords);
