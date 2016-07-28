@@ -30,6 +30,7 @@
   </nav>
   <div class="jumbotron">
     <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
+    <a href="/jobmatches/@Model.GetId()" class="btn btn-primary" role="button">View Job Matches By Resume</a>
     <h2 class="h2-headers" id="account-update">Update Your Information</h2>
     <!-- Maybe put the update form in a modal? -->
     <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
@@ -60,6 +61,6 @@
       <input type="hidden" name="_method" value="DELETE">
       <button type="submit" name="button" class="btn btn-danger">Delete Account</button>
     </form>
-    <a href="/jobmatches/@Model.GetId()" class="btn btn-primary" role="button">View Job Matches By Resume</a>
+
   </div>
 </body>

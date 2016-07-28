@@ -64,8 +64,8 @@ namespace JobBoard
         Category selectedCategory = Category.Find(selectedJob.GetCategoryId());
         Company selectedCompany = Company.Find(selectedJob.GetCompanyId());
 
-        Dictionary<string, int> categoryWords = selectedCategory.GetPopularWords(10);
-        Dictionary<string, int> companyWords = selectedCompany.GetPopularWords(10);
+        Dictionary<string, int> categoryWords = selectedCategory.GetPopularWords(20);
+        Dictionary<string, int> companyWords = selectedCompany.GetPopularWords(20);
 
         model.Add("categoryWords", categoryWords);
         model.Add("companyWords", companyWords);
