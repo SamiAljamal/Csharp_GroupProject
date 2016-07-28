@@ -11,9 +11,6 @@ namespace JobBoard
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
       Get ["/login"] = _ => View ["login.cshtml", Account.GetAll()];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
-      Get ["/accounts"] = _ => {
-        return View ["accounts.cshtml", Account.GetAll()];
-      };
       Post ["/login"] = _ => {
         int userId = Account.FindUserId(Request.Form ["username"]);
         if(userId==-1)
@@ -38,7 +35,7 @@ namespace JobBoard
           Request.Form ["account-username"]
         );
         newAccount.Save();
-        return View ["accounts.cshtml", Account.GetAll()];
+        return View ["login.cshtml", Account.GetAll()];
       };
       Post["/keyword"]=_=>{
         Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], 1, 1);
