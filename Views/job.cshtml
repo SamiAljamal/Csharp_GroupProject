@@ -38,15 +38,19 @@
     <h1>Update This Job</h1>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
-      <h2>Title<input required type="text" name="job-title" class="form-control"></h2>
-      <h2>Description<textarea required type="text" name="job-description" class="form-control"></textarea></h2>
-      <h2>Salary<input required type="number" name="job-salary" class="form-control" id="last-input"></h2>
+      <h2>Title<input required type="text" name="job-title" class="form-control" value="@Model.GetTitle()"></h2>
+
+      <h2>Description<textarea required type="text" name="job-description" class="form-control">@Model.GetDescription()</textarea></h2>
+
+      <h2>Salary<input required type="number" name="job-salary" class="form-control" id="last-input" value="@Model.GetSalary()"></h2>
       <button type="submit" class="btn btn-success">Update Job</button>
     </form>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/deleted" method="post">
       <input required type="hidden" name="_method" value="DELETE">
       <button type="submit" name="button" class="btn btn-danger">Delete Job</button>
     </form>
+
+
     <form class="form-group" action="/jobs/@Model.GetId()/keywordinfo" method="post">
       <h2 for="keyword">Keyword</h2>
       <input required type="text" name="keyword" class="form-control">

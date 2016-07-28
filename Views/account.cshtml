@@ -36,15 +36,15 @@
     <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
       <div class="row">
-        <h2 class="col-xs-6">First Name<input type="text" name="account-first-name" class="form-control"></h2>
-        <h2 class="col-xs-6">Last Name<input type="text" name="account-last-name" class="form-control"></h2>
+        <h2 class="col-xs-6">First Name<input type="text" name="account-first-name" class="form-control" value="@Model.GetFirstName()"></h2>
+        <h2 class="col-xs-6">Last Name<input type="text" name="account-last-name" class="form-control" value="@Model.GetLastName()"></h2>
       </div>
       <div class="row">
-        <h2 class="col-xs-6">Email<input type="text" name="account-email" class="form-control"></h2>
-        <h2 class="col-xs-6">Phone<input type="text" name="account-phone" class="form-control"></h2>
+        <h2 class="col-xs-6">Email<input type="text" name="account-email" class="form-control" value="@Model.GetEmail()"></h2>
+        <h2 class="col-xs-6">Phone<input type="text" name="account-phone" class="form-control" value="@Model.GetPhone()"></h2>
       </div>
       <h2>Education
-        <select class="form-control" name="account-education">
+        <select class="form-control" name="account-education" value="@Model.GetEducation()">
           <option value="1">High School Degree</option>
           <option value="2">Some College</option>
           <option value="3">Associate's Degree</option>
@@ -53,7 +53,7 @@
           <option value="6">Ph.D</option>
         </select>
       </h2>
-      <h2>Resume<textarea required rows="5" cols="30" type="text" name="account-resume" class="form-control"></textarea></h2>
+      <h2>Resume<textarea required rows="5" cols="30" type="text" name="account-resume" class="form-control" value="@Model.GetResume()"></textarea></h2>
       <h2 id="last-input">Username<input type="text" name="account-username" class="form-control"></h2>
       <button type="submit" class="btn btn-success">Update Account</button>
     </form>

@@ -235,12 +235,6 @@ namespace JobBoard
         newDescription = this.GetDescription();
       }
 
-      this.SetDescription(newDescription.Trim());
-      this.SetTitle(newTitle.Trim());
-      this.SetSalary(newSalary);
-      this.SetCompanyId(newCompanyId);
-      this.SetCategoryId(newCategoryId);
-
       SqlCommand cmd = new SqlCommand("UPDATE jobs SET title = @NewTitle WHERE id = @JobId; UPDATE jobs SET description = @NewDescription WHERE id = @JobId; UPDATE jobs SET salary = @NewSalary WHERE id = @JobId;UPDATE jobs SET company_id = @CompanyId WHERE id = @JobId; UPDATE jobs SET category_id = @CategoryId WHERE id = @JobId;", conn);
 
       SqlParameter newTitleParameter = new SqlParameter();
