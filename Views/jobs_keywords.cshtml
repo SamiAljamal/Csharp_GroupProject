@@ -15,6 +15,14 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
           <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/jobs">Jobs</a></li>
+              <li><a href="/categories">Categories</a></li>
+              <li><a href="/companies">Companies</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="/accounts/new">Create Account</a></li>
@@ -26,8 +34,8 @@
       </div>
     </nav>
     <div class="jumbotron">
-      <h2>Here are the keywords for @Model["job"].GetTitle()</h2>
-      <h3>Keywords used in this job's category</h3>
+      <h2 class="h2-headers h1-keywords">Top keywords for @Model["job"].GetTitle()</h2>
+      <h2 class="h2-headers">Keywords in job's category</h2>
       <ul>
         @foreach(KeyValuePair<string, int> pair in Model["categoryWords"])
         {
@@ -35,7 +43,7 @@
         }
       </ul>
 
-      <h3 class="h2-headers">Keywords used by this job's company</h3>
+      <h2 class="h2-headers">Keywords in job's company</h2>
       <ul>
         @foreach(string companyWord in Model["companyWords"].Keys)
         {

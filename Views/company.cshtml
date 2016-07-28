@@ -10,6 +10,14 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/jobs">Jobs</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/companies">Companies</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/accounts/new">Create Account</a></li>
@@ -22,17 +30,17 @@
   </nav>
   <div class="jumbotron">
     <h1>@Model.GetName()</h1>
-    <h2>View All Jobs In Company</h2>
+    <h2 class="h2-headers">View All Jobs In Company</h2>
     @foreach (var job in Model.GetJobs())
     {
       <ul>
-        <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
+        <li><a href="/jobs/@job.GetId()/@job.GetTitle()" id="list-names">@job.GetTitle()</a></li>
       </ul>
     }
-    <h2>Update Your Company</h2>
+    <h2 class="h2-headers">Update Your Company</h2>
     <form class="from-group" action="/companies/@Model.GetId()/@Model.GetName()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
-      <h2>Name<input type="text" name="company-name" class="form-control"></h2>
+      <h2>Name<input type="text" name="company-name" class="form-control" id="last-input"></h2>
       <button type="submit" class="btn btn-success">Update Company</button>
     </form>
     <form class="form-group" action="/companies/@Model.GetId()/@Model.GetName()/deleted" method="post">

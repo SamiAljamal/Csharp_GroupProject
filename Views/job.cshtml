@@ -10,6 +10,14 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
       <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/jobs">Jobs</a></li>
+          <li><a href="/categories">Categories</a></li>
+          <li><a href="/companies">Companies</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="/accounts/new">Create Account</a></li>
@@ -26,23 +34,23 @@
     <h2>@Model.GetDescription()</h2>
   </div>
   <div class="jumbotron">
-    <h1>Update This Listing</h1>
+    <h1>Update This Job</h1>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
-      <h2>Title<input type="text" name="job-title" class="form-control"></h2>
-      <h2>Description<input type="text" name="job-description" class="form-control"></h2>
-      <h2>Salary<input type="number" name="job-salary" class="form-control"></h2>
+      <h2>Title<input required type="text" name="job-title" class="form-control"></h2>
+      <h2>Description<textarea required type="text" name="job-description" class="form-control"></textarea></h2>
+      <h2>Salary<input required type="number" name="job-salary" class="form-control" id="last-input"></h2>
       <button type="submit" class="btn btn-success">Update Job</button>
     </form>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/deleted" method="post">
-      <input type="hidden" name="_method" value="DELETE">
+      <input required type="hidden" name="_method" value="DELETE">
       <button type="submit" name="button" class="btn btn-danger">Delete Job</button>
     </form>
     <a href="/jobs/@Model.GetId()/keywords" role="button" class="btn btn-primary">Get keywords associated with jobs like this</a>
     <form class="form-group" action="/jobs/@Model.GetId()/keywordinfo" method="post">
       <h2 for="keyword">Keyword</h2>
-      <input type="text" name="keyword" class="form-control" required>
-      <button class="search-button" type="submit">Submit</button>
+      <input required type="text" name="keyword" class="form-control">
+      <button class="keyword-search btn btn-warning" type="submit">Submit</button>
     </form>
   </div>
 </body>

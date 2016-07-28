@@ -30,6 +30,7 @@ body {
   margin-left: 100px;
   margin-right: 100px;
   margin-top: 75px;
+  margin-bottom: 150px;
 }
 
 .jumbotron h1 {
@@ -72,7 +73,7 @@ option {
 
 .jumbotron .btn-success {
   background: rgba(0,0,0,0.25);
-  width: 300px;
+  width: 400px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -81,5 +82,20 @@ option {
 }
 
 .jumbotron p {
-  margin-left: 50px;
+  text-align: center;
+}
+
+#list-names {
+  font-size: 30pt;
+}
+
+#indeed-search {
+  margin: 0 auto;
+  width: 350px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.h1-keywords {
+  font-size: 35pt;
 }
