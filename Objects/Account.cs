@@ -251,17 +251,17 @@ namespace JobBoard
       return foundAccounts[0];
     }
 
-    public static Account FindUser(string username)
+    public static Account FindUsername(string username)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM accounts WHERE username = @AccountUserName;", conn);
-      SqlParameter accountUserNameParameter = new SqlParameter();
-      accountUserNameParameter.ParameterName = "@AccountUserName";
-      accountUserNameParameter.Value =username;
-      cmd.Parameters.Add(accountUserNameParameter);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM accounts WHERE username = @AccountUsername;", conn);
+      SqlParameter accountUsernameParameter = new SqlParameter();
+      accountUsernameParameter.ParameterName = "@AccountUsername";
+      accountUsernameParameter.Value = username;
+      cmd.Parameters.Add(accountUsernameParameter);
       rdr = cmd.ExecuteReader();
 
       List<Account> foundAccounts = new List<Account>{};
