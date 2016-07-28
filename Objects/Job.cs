@@ -311,25 +311,30 @@ namespace JobBoard
     public Dictionary<string, int> UniqueWordCount()
     {
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
-      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such"};
       Dictionary<string, int> UniqueWords = new Dictionary<string, int>{};
-      string jobDescription = this.GetDescription().ToLower() + " ";
+      string jobDescription = this.GetDescription() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
       string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
+      Regex noncharacter = new Regex(@"[^A-Za-z0-9+#., ]+");
+      string mistranslatedCharsRemoved = noncharacter.Replace(trimmedJobDescription, "");
       Regex whitespace = new Regex(@"\s+");
-      string[] wordList = whitespace.Split(trimmedJobDescription);
+      string[] wordList = whitespace.Split(mistranslatedCharsRemoved);
       for(int i=0; i < wordList.Length-1; i++)
       {
-        if(!prepositions.Contains(wordList[i]) && !commonWords.Contains(wordList[i]))
+        if(!prepositions.Contains(wordList[i].ToLower()) && !commonWords.Contains(wordList[i].ToLower()))
         {
           int count=0;
-          if(!UniqueWords.ContainsKey(wordList[i]))
+          string noPuncWord = Regex.Replace(wordList[i], @"[\.,\,,\?,\!,\),\;,\:]", "");
+          if(!UniqueWords.ContainsKey(wordList[i].ToLower()))
           {
             for(int j = i; j < wordList.Length-1; j++)
             {
               if(wordList[i]==wordList[j]) count+=1;
             }
-            UniqueWords.Add(wordList[i], count);
+            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+            UniqueWords.Add(wordList[i].ToLower(), count);
           }
         }
       }
@@ -346,12 +351,12 @@ namespace JobBoard
     public Dictionary<string, int> CompoundWordCount()
     {
       List<string> prepositions = new List<string>{"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "underneath", "under", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without", "a", "an", "the"};
-      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had"};
+      List<string> commonWords = new List<string>{"any","that","our","you","just","and","this","or","is","will","are","be","can","have","had","requirements","compentencies","duties","responsibilities","qualifications","essential","such"};
       Dictionary<string, int> compoundWords = new Dictionary<string, int>{};
-      string jobDescription = this.GetDescription().ToLower() + " ";
+      string jobDescription = this.GetDescription() + " ";
       string backTrimmedJobDescription = Regex.Replace(jobDescription, @"[\.,\,,\?,\!,\),\;,\:] ", " ");
       string trimmedJobDescription = Regex.Replace(backTrimmedJobDescription, @" [\(]", " ");
-      Regex noncharacter = new Regex(@"^[A-Za-z0-9]+");
+      Regex noncharacter = new Regex(@"[^A-Za-z0-9+#., ]+");
       string mistranslatedCharsRemoved = noncharacter.Replace(trimmedJobDescription, "");
 
       Regex whitespace = new Regex(@"\s+");
@@ -362,11 +367,11 @@ namespace JobBoard
         // {
         // }
         int count = 0;
-        if(!compoundWords.ContainsKey(wordList[i] + " " + wordList[i+1]))
+        if(!compoundWords.ContainsKey(wordList[i] + " " + wordList[i+1]) && char.IsUpper(wordList[i][0]) && char.IsUpper(wordList[i+1][0]) && !prepositions.Contains(wordList[i].ToLower()) && !commonWords.Contains(wordList[i].ToLower()))
         {
           for(int j = i; j < wordList.Length-1; j++)
           {
-            if(wordList[i] + " " + wordList[i+1] == wordList[j] + " " + wordList[j+1]) count+=1;
+            if(wordList[i] + " " + wordList[i+1] == wordList[j] + " " + wordList[j+1]) count+=3;
           }
           compoundWords.Add(wordList[i] + " " + wordList[i+1], count);
         }
@@ -382,7 +387,20 @@ namespace JobBoard
 
     public void SaveWords()
     {
-      Dictionary<string, int> newDictionary = this.UniqueWordCount();
+      Dictionary<string, int> uniqueDictionary = this.UniqueWordCount();
+      Dictionary<string, int> compoundDictionary = this.CompoundWordCount();
+      Dictionary<string, int> newDictionary = new Dictionary<string, int>{};
+
+      foreach(KeyValuePair<string, int> pair in uniqueDictionary)
+      {
+        newDictionary.Add(pair.Key, pair.Value);
+      }
+
+      foreach(KeyValuePair<string, int> pair in compoundDictionary)
+      {
+        newDictionary.Add(pair.Key, pair.Value);
+      }
+
       foreach(KeyValuePair<string, int> pair in newDictionary)
       {
         SqlConnection conn = DB.Connection();

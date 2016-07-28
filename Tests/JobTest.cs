@@ -170,6 +170,10 @@ namespace JobBoard
     public void Dispose()
     {
       Job.DeleteAll();
+      Keyword.DeleteAll();
+      Account.DeleteAll();
+      Category.DeleteAll();
+      Company.DeleteAll();
     }
   }
 }
