@@ -20,13 +20,13 @@ namespace JobBoard
     public Account (string firstName, string lastName, string email, string phone, int education, string resume, string username, int id = 0)
     {
       _id = id;
-      _firstName = firstName;
-      _lastName = lastName;
-      _email = email;
-      _phone = phone;
+      _firstName = firstName.Trim();
+      _lastName = lastName.Trim();
+      _email = email.Trim();
+      _phone = phone.Trim();
       _education = education;
-      _resume = resume;
-      _username = username;
+      _resume = resume.Trim();
+      _username = username.Trim();
 
     }
 
@@ -162,22 +162,22 @@ namespace JobBoard
 
       SqlParameter firstNameParameter = new SqlParameter();
       firstNameParameter.ParameterName = "@FirstName";
-      firstNameParameter.Value = this.GetFirstName();
+      firstNameParameter.Value = this.GetFirstName().Trim();
       cmd.Parameters.Add(firstNameParameter);
 
       SqlParameter lastNameParameter = new SqlParameter();
       lastNameParameter.ParameterName = "@LastName";
-      lastNameParameter.Value = this.GetLastName();
+      lastNameParameter.Value = this.GetLastName().Trim();
       cmd.Parameters.Add(lastNameParameter);
 
       SqlParameter emailParameter = new SqlParameter();
       emailParameter.ParameterName = "@Email";
-      emailParameter.Value = this.GetEmail();
+      emailParameter.Value = this.GetEmail().Trim();
       cmd.Parameters.Add(emailParameter);
 
       SqlParameter phoneParameter = new SqlParameter();
       phoneParameter.ParameterName = "@Phone";
-      phoneParameter.Value = this.GetPhone();
+      phoneParameter.Value = this.GetPhone().Trim();
       cmd.Parameters.Add(phoneParameter);
 
       SqlParameter educationParameter = new SqlParameter();
@@ -187,12 +187,12 @@ namespace JobBoard
 
       SqlParameter resumeParameter = new SqlParameter();
       resumeParameter.ParameterName = "@Resume";
-      resumeParameter.Value = this.GetResume();
+      resumeParameter.Value = this.GetResume().Trim();
       cmd.Parameters.Add(resumeParameter);
 
       SqlParameter usernameParameter = new SqlParameter();
       usernameParameter.ParameterName = "@Username";
-      usernameParameter.Value = this.GetUsername();
+      usernameParameter.Value = this.GetUsername().Trim();
       cmd.Parameters.Add(usernameParameter);
 
       rdr = cmd.ExecuteReader();
@@ -292,22 +292,22 @@ namespace JobBoard
 
       SqlParameter newFirstNameParameter = new SqlParameter();
       newFirstNameParameter.ParameterName = "@NewFirstName";
-      newFirstNameParameter.Value = newFirstName;
+      newFirstNameParameter.Value = newFirstName.Trim();
       cmd.Parameters.Add(newFirstNameParameter);
 
       SqlParameter newLastNameParameter = new SqlParameter();
       newLastNameParameter.ParameterName = "@NewLastName";
-      newLastNameParameter.Value = newLastName;
+      newLastNameParameter.Value = newLastName.Trim();
       cmd.Parameters.Add(newLastNameParameter);
 
       SqlParameter newEmailParameter = new SqlParameter();
       newEmailParameter.ParameterName = "@NewEmail";
-      newEmailParameter.Value = newEmail;
+      newEmailParameter.Value = newEmail.Trim();
       cmd.Parameters.Add(newEmailParameter);
 
       SqlParameter newPhoneParameter = new SqlParameter();
       newPhoneParameter.ParameterName = "@NewPhone";
-      newPhoneParameter.Value = newPhone;
+      newPhoneParameter.Value = newPhone.Trim();
       cmd.Parameters.Add(newPhoneParameter);
 
       SqlParameter newEducationParameter = new SqlParameter();
@@ -317,12 +317,12 @@ namespace JobBoard
 
       SqlParameter newResumeParameter = new SqlParameter();
       newResumeParameter.ParameterName = "@NewResume";
-      newResumeParameter.Value = newResume;
+      newResumeParameter.Value = newResume.Trim();
       cmd.Parameters.Add(newResumeParameter);
 
       SqlParameter newUsernameParameter = new SqlParameter();
       newUsernameParameter.ParameterName = "@NewUsername";
-      newUsernameParameter.Value = newUsername;
+      newUsernameParameter.Value = newUsername.Trim();
       cmd.Parameters.Add(newUsernameParameter);
 
       SqlParameter accountIdParameter = new SqlParameter();

@@ -17,8 +17,8 @@ namespace JobBoard
 
     public Job(string title, string description, int salary, int companyId, int categoryId, int id=0)
     {
-      _title = title;
-      _description = description;
+      _title = title.Trim();
+      _description = description.Trim();
       _salary = salary;
       _companyId = companyId;
       _categoryId = categoryId;
@@ -235,9 +235,8 @@ namespace JobBoard
         newDescription = this.GetDescription();
       }
 
-
-      this.SetDescription(newDescription);
-      this.SetTitle(newTitle);
+      this.SetDescription(newDescription.Trim());
+      this.SetTitle(newTitle.Trim());
       this.SetSalary(newSalary);
       this.SetCompanyId(newCompanyId);
       this.SetCategoryId(newCategoryId);
@@ -246,12 +245,12 @@ namespace JobBoard
 
       SqlParameter newTitleParameter = new SqlParameter();
       newTitleParameter.ParameterName = "@NewTitle";
-      newTitleParameter.Value = newTitle;
+      newTitleParameter.Value = newTitle.Trim();
       cmd.Parameters.Add(newTitleParameter);
 
       SqlParameter newDescriptionParameter = new SqlParameter();
       newDescriptionParameter.ParameterName = "@NewDescription";
-      newDescriptionParameter.Value = newDescription;
+      newDescriptionParameter.Value = newDescription.Trim();
       cmd.Parameters.Add(newDescriptionParameter);
 
       SqlParameter newSalaryParameter = new SqlParameter();

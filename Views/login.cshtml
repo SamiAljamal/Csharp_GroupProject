@@ -16,16 +16,22 @@
           <ul class="dropdown-menu">
             <li><a href="/accounts/new">Create Account</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/login">Login</a></li>
+            <li><a href="/login">Select your Profile</a></li>
           </ul>
         </li>
       </ul>
     </div>
   </nav>
   <div class="jumbotron login-jumbotron">
-    <b class="glyphicon glyphicon-user"></b>
+    <span class="glyphicon glyphicon-user"></span>
     <form action="/login" method="post">
-      <input type="text" name="username" placeholder="Username">
+      <select class="form-control" name="username">
+        @foreach (var account in Model)
+        {
+          <option value = "@account.GetId()">@account.GetUsername()</option>
+        }
+      </select>
+
       <button type="submit" class="btn btn-success">Login</button>
     </form>
   </div>
