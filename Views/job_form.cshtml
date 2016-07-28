@@ -28,18 +28,24 @@
         <h2>Title<input type="text" name="job-title" class="form-control"></h2>
         <h2>Description<input type="text" name="job-description" class="form-control"></h2>
         <h2>Salary<input type="text" name="job-salary" class="form-control"></h2>
-        <select name="company">
-          @foreach(var company in Model["allCompanies"])
-          {
-            <option value=@company.GetId()>@company.GetName()</option>
-          }
-        </select>
-        <select name="category">
-          @foreach(var category in Model["allCategories"])
-          {
-            <option value=@category.GetId()>@category.GetName()</option>
-          }
-        </select>
+        <div class="row">
+          <h2 class="col-xs-6">Company
+            <select name="company" class="form-control">
+              @foreach(var company in Model["allCompanies"])
+              {
+                <option value=@company.GetId()>@company.GetName()</option>
+              }
+            </select>
+          </h2>
+          <h2 class="col-xs-6">Category
+            <select name="category" class="form-control">
+              @foreach(var category in Model["allCategories"])
+              {
+                <option value=@category.GetId()>@category.GetName()</option>
+              }
+            </select>
+          </h2>
+        </div>
         <button type="btn" class="btn btn-success">Create Job</button>
       </form>
     }

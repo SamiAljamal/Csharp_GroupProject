@@ -25,10 +25,8 @@
     <h1>@Model.GetTitle()</h1>
     <h2>@Model.GetDescription()</h2>
   </div>
-
-
   <div class="jumbotron">
-    <h2 class="h2-headers">Update Your Listing</h2>
+    <h1>Update This Listing</h1>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
       <h2>Title<input type="text" name="job-title" class="form-control"></h2>
@@ -40,24 +38,11 @@
       <input type="hidden" name="_method" value="DELETE">
       <button type="submit" name="button" class="btn btn-danger">Delete Job</button>
     </form>
-    <a href="/jobs/@Model.GetId()/keywords">Get keywords associated with jobs like this</a>
+    <a href="/jobs/@Model.GetId()/keywords" role="button" class="btn btn-primary">Get keywords associated with jobs like this</a>
     <form class="form-group" action="/jobs/@Model.GetId()/keywordinfo" method="post">
-      <label for="keyword">Keyword:</label>
-      <input type="text" name="keyword" required>
-      <button type="submit">Submit</button>
+      <h2 for="keyword">Keyword</h2>
+      <input type="text" name="keyword" class="form-control" required>
+      <button class="search-button" type="submit">Submit</button>
     </form>
   </div>
 </body>
-
-<!-- <form class="form-group" action="/jobs/@Model.GetId()/keywords" method="post">
-<label for="keyword_search">Search for a keyword in jobs like this: </label>
-<input type="text" name="keyword_search" class="form-control">
-<button type="button" name="button"></button>
-</form> -->
-<!-- <h2>Word count</h2>
-<form  action="/keyword" method="post">
-  <input type="text" name="title" value="">
-  <textarea name="descrip" rows="8" cols="40"></textarea>
-  <input type="number" name="salary" value="">
-  <button type="sumbit" name="button">Submit</button>
-</form> -->

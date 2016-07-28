@@ -45,6 +45,13 @@ namespace JobBoard
         newJob.Save();
         return View["result.cshtml", newJob];
       };
+
+      Get["/jobmatches/{id}"]=parameters=>{
+        Account selectedAccount = Account.Find(parameters.id);
+        Dictionary<Job, int> rankedJobs = selectedAccount.GetRankedJobs();
+        return View["job_matches.cshtml", rankedJobs];
+      };
+
       Get["/jobs/{id}/keywords"] = parameters => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Job selectedJob = Job.Find(parameters.id);

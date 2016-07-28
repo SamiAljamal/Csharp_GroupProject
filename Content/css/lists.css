@@ -66,7 +66,7 @@ option {
   text-align: center;
 }
 
-.jumbotron a {
+.jumbotron a, li {
   font-size: 18pt;
 }
 
@@ -78,4 +78,8 @@ option {
   margin-right: auto;
   font-size: 40px;
   margin-top: 100px;
+}
+
+.jumbotron p {
+  margin-left: 50px;
 }
