@@ -15,8 +15,16 @@ namespace JobBoard
         return View ["accounts.cshtml", Account.GetAll()];
       };
       Post ["/login"] = _ => {
-        Account loggedAccount = Account.FindUsername(Request.Form ["username"]);
-        return View ["account.cshtml", loggedAccount];
+        int userId = Account.FindUserId(Request.Form ["username"]);
+        if(userId==-1)
+        {
+          return View ["user_not_found.cshtml"];
+        }
+        else
+        {
+          Account loggedAccount = Account.Find(userId);
+          return View ["account.cshtml", loggedAccount];
+        }
       };
       Post ["/accounts"] = _ => {
         Account newAccount = new Account

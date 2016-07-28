@@ -1,46 +1,63 @@
 <head>
   <link rel="stylesheet" href="/Content/css/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="/Content/css/styles.css" type="text/css">
+  <link rel="stylesheet" href="/Content/css/singular-views.css" type="text/css">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="/Content/js/bootstrap.js"></script>
 </head>
 <body>
-  <h1>@Model.GetTitle()</h1>
-  <h2>@Model.GetDescription()</h2>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/accounts/new">Create Account</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/login">Login</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<body>
+  <div class="job-info">
+    <h1>@Model.GetTitle()</h1>
+    <h2>@Model.GetDescription()</h2>
+  </div>
 
 
-  <h2>Update Your Listing</h2>
-  <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
-    <input type="hidden" name="_method" value="PATCH">
-    <h2>Title<input type="text" name="job-title" class="form-control"></h2>
-    <h2>Description<input type="text" name="job-description" class="form-control"></h2>
-    <h2>Salary<input type="number" name="job-salary" class="form-control"></h2>
-    <button type="submit" class="btn btn-success">Update Job</button>
-  </form>
-  <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/deleted" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit" name="button" class="btn btn-danger">Delete Job</button>
-  </form>
-
-  <!-- <form class="form-group" action="/jobs/@Model.GetId()/keywords" method="post">
-    <label for="keyword_search">Search for a keyword in jobs like this: </label>
-    <input type="text" name="keyword_search" class="form-control">
-    <button type="button" name="button"></button>
-  </form> -->
-
-  <a href="/jobs/@Model.GetId()/keywords">Get keywords associated with jobs like this</a>
-
-  <form class="form-group" action="/jobs/@Model.GetId()/keywordinfo" method="post">
-    <label for="keyword">Keyword:</label>
-    <input type="text" name="keyword" required>
-    <button type="submit">Submit</button>
-  </form>
-
-  <a href="/"><h1>Back Home</h1></a>
+  <div class="jumbotron">
+    <h2 class="h2-headers">Update Your Listing</h2>
+    <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      <h2>Title<input type="text" name="job-title" class="form-control"></h2>
+      <h2>Description<input type="text" name="job-description" class="form-control"></h2>
+      <h2>Salary<input type="number" name="job-salary" class="form-control"></h2>
+      <button type="submit" class="btn btn-success">Update Job</button>
+    </form>
+    <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/deleted" method="post">
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" name="button" class="btn btn-danger">Delete Job</button>
+    </form>
+    <a href="/jobs/@Model.GetId()/keywords">Get keywords associated with jobs like this</a>
+    <form class="form-group" action="/jobs/@Model.GetId()/keywordinfo" method="post">
+      <label for="keyword">Keyword:</label>
+      <input type="text" name="keyword" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 </body>
 
+<!-- <form class="form-group" action="/jobs/@Model.GetId()/keywords" method="post">
+<label for="keyword_search">Search for a keyword in jobs like this: </label>
+<input type="text" name="keyword_search" class="form-control">
+<button type="button" name="button"></button>
+</form> -->
 <!-- <h2>Word count</h2>
 <form  action="/keyword" method="post">
   <input type="text" name="title" value="">
   <textarea name="descrip" rows="8" cols="40"></textarea>
   <input type="number" name="salary" value="">
-  <button type="sumbit" name="button">Submit</button> -->
-</form>
+  <button type="sumbit" name="button">Submit</button>
+</form> -->

@@ -38,7 +38,7 @@ body {
   color: #FFFFFF;
   font-size: 50pt;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 100px;
 }
 
 .h2-headers {
@@ -81,4 +81,15 @@ option {
   margin-left: 15px;
   margin-right: 15px;
   margin-bottom: 100px;
+}
+
+.job-info {
+  border: 5px solid #0000EE;
+  background-color: white;
+  margin: 10px;
+  color: black;
+  padding: 5px;
+}
+.job-info h1 {
+  text-align: center;
 }

@@ -251,7 +251,7 @@ namespace JobBoard
       return foundAccounts[0];
     }
 
-    public static Account FindUsername(string username)
+    public static int FindUserId(string username)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
@@ -264,20 +264,11 @@ namespace JobBoard
       cmd.Parameters.Add(accountUsernameParameter);
       rdr = cmd.ExecuteReader();
 
-      List<Account> foundAccounts = new List<Account>{};
+      int foundAccountId = -1;
 
       while(rdr.Read())
       {
-        int foundAccountId = rdr.GetInt32(0);
-        string foundAccountFirstName = rdr.GetString(1);
-        string foundAccountLastName = rdr.GetString(2);
-        string foundAccountEmail = rdr.GetString(3);
-        string foundAccountPhone = rdr.GetString(4);
-        int foundAccountEducation = rdr.GetInt32(5);
-        string foundAccountResume = rdr.GetString(6);
-        string foundAccountUsername = rdr.GetString(7);
-        Account foundAccount = new Account(foundAccountFirstName, foundAccountLastName, foundAccountEmail, foundAccountPhone, foundAccountEducation, foundAccountResume, foundAccountUsername, foundAccountId);
-        foundAccounts.Add(foundAccount);
+        foundAccountId = rdr.GetInt32(0);
       }
 
       if (rdr != null)
@@ -288,7 +279,7 @@ namespace JobBoard
       {
         conn.Close();
       }
-      return foundAccounts[0];
+      return foundAccountId;
     }
 
     public void Update(string newFirstName, string newLastName, string newEmail, string newPhone, int newEducation, string newResume, string newUsername)

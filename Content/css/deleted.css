@@ -33,3 +33,13 @@ h1 {
   margin-bottom: 30px;
   margin-top: 300px;
 }
+
+.btn-success {
+  background: rgba(0,0,0,0.25);
+  width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 40px;
+  margin-top: 50px;
+}

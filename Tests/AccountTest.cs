@@ -47,14 +47,14 @@ namespace JobBoard
     }
 
     [Fact]
-    public void Test_FindByUsername_ReturnsAccountUsername()
+    public void Test_FindUserId_ReturnsAccount()
     {
       Account testAccount = new Account("John", "Doe", "johndoe@gmail.com", "503-555-5555", 1, "This is my resume.", "jdoe");
       testAccount.Save();
 
-      Account foundAccount = Account.FindUsername(testAccount.GetUsername());
+      int foundAccountId = Account.FindUserId(testAccount.GetUsername());
 
-      Assert.Equal(testAccount,foundAccount);
+      Assert.Equal(testAccount.GetId(), foundAccountId);
 
     }
 
