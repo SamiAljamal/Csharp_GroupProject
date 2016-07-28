@@ -21,7 +21,7 @@
     </div>
   </nav>
   <div class="jumbotron">
-    <h1>Your Dashboard</h1>
+    <h1>Jobs</h1>
     <h2 class="h2-headers">Find job listings on Indeed</h2>
     <form action='http://www.indeed.com/jobs' target ="_blank" METHOD='GET'>
       <table cellspacing='0' style='font-family:arial'>
@@ -42,13 +42,13 @@
         </tr>
       </table>
     </form>
-    <h2 class="h2-headers">Your current postings</h2>
+    <h2 class="h2-headers">All Jobs</h2>
     @foreach (var job in Model)
     {
       <ul>
         <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
       </ul>
     }
+    <a href="/jobs/new" class="btn btn-success" role="button">Create New Job</a>
   </div>
-  <!-- <a href="/jobs/new"><h1>Create a New Job</h1></a> -->
 </body>

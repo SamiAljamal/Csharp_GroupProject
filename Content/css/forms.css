@@ -67,3 +67,8 @@ option {
 .jumbotron .btn-success:hover {
   background-color: green;
 }
+
+p {
+  margin-left: 50px;
+  margin-right: 40px;
+}
