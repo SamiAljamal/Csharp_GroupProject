@@ -29,6 +29,8 @@
     <h1>Update This Listing</h1>
     <form class="form-group" action="/jobs/@Model.GetId()/@Model.GetTitle()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">
+      <input type="hidden" name="category-id" value="@Model.GetCategoryId()">
+      <input type="hidden" name="company-id" value="@Model.GetCompanyId()">
       <h2>Title<input type="text" name="job-title" class="form-control"></h2>
       <h2>Description<input type="text" name="job-description" class="form-control"></h2>
       <h2>Salary<input type="number" name="job-salary" class="form-control"></h2>
