@@ -398,8 +398,11 @@ namespace JobBoard
             {
               if(wordList[i]==wordList[j]) count+=1;
             }
-            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
-            if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+            if (noPuncWord.Length > 1)
+            {
+              if(Char.IsUpper(noPuncWord[0]) && Char.IsUpper(noPuncWord[1])) count *= 2;
+              if(Char.IsUpper(noPuncWord[0]) && !Char.IsUpper(noPuncWord[1])) count *= 2;
+            }
             UniqueWords.Add(wordList[i].ToLower(), count);
           }
         }
