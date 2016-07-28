@@ -9,13 +9,15 @@ namespace JobBoard
     public HomeModule()
     {
       Get ["/"] = _ => View ["index.cshtml", Account.GetAll()];
-      Get ["/login"] = _ => View ["login.cshtml"];
+      Get ["/login"] = _ => View ["login.cshtml", Account.GetAll()];
       Get ["/accounts/new"] = _ =>  View ["account_form.cshtml"];
-
       Get ["/accounts"] = _ => {
         return View ["accounts.cshtml", Account.GetAll()];
       };
-
+      Post ["/login"] = _ => {
+        Account loggedAccount = Account.FindUser(Request.Form ["username"]);
+        return View ["account.cshtml", loggedAccount];
+      };
       Post ["/accounts"] = _ => {
         Account newAccount = new Account
         (
@@ -30,13 +32,11 @@ namespace JobBoard
         newAccount.Save();
         return View ["accounts.cshtml", Account.GetAll()];
       };
-
       Post["/keyword"]=_=>{
         Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], 1, 1);
         newJob.Save();
         return View["result.cshtml", newJob];
       };
-
       Get["/jobs/{id}/keywords"] = parameters => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Job selectedJob = Job.Find(parameters.id);
@@ -96,12 +96,11 @@ namespace JobBoard
       Delete ["/accounts/{id}/{first_name}/deleted"] = parameters => {
         Account selectedAccount = Account.Find(parameters.id);
         selectedAccount.DeleteOne();
-        return View ["deleted_account.cshtml", selectedAccount];
+        return View ["deleted.cshtml", selectedAccount];
       };
       Get ["/jobs"] = _ => {
         return View ["jobs.cshtml", Job.GetAll()];
       };
-
       Get ["/jobs/new"] = _ =>{
         Dictionary<string, object> model = new Dictionary<string, object> {};
         List<Company> allCompanies = Company.GetAll();
@@ -110,7 +109,6 @@ namespace JobBoard
         model.Add("allCategories", allCategories);
         return View ["job_form.cshtml", model];
       };
-
       Post ["/jobs"] = _ => {
         Job newJob = new Job
         (
@@ -143,9 +141,8 @@ namespace JobBoard
       Delete ["/jobs/{id}/{title}/deleted"] = parameters => {
         Job selectedJob = Job.Find(parameters.id);
         selectedJob.Delete();
-        return View ["deleted_job.cshtml", selectedJob];
+        return View ["deleted.cshtml", selectedJob];
       };
-
       Get ["/companies"] = _ => {
         return View ["companies.cshtml", Company.GetAll()];
       };
@@ -168,9 +165,8 @@ namespace JobBoard
       Delete ["/companies/{id}/{title}/deleted"] = parameters => {
         Company selectedCompany = Company.Find(parameters.id);
         selectedCompany.Delete();
-        return View ["deleted_company.cshtml", selectedCompany];
+        return View ["deleted.cshtml", selectedCompany];
       };
-
       Get ["/categories"] = _ => {
         return View ["categories.cshtml", Category.GetAll()];
       };
@@ -192,9 +188,8 @@ namespace JobBoard
       Delete ["/categories/{id}/{title}/deleted"] = parameters => {
         Category selectedCategory = Category.Find(parameters.id);
         selectedCategory.Delete();
-        return View ["deleted_category.cshtml", selectedCategory];
+        return View ["deleted.cshtml", selectedCategory];
       };
-
       Get ["/accounts/{id}/rankedjobs"] = parameters => {
         Account selectedAccount = Account.Find(parameters.id);
         Dictionary<Job, int> rankedJobs = selectedAccount.GetRankedJobs();
