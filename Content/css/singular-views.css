@@ -30,6 +30,7 @@ body {
   margin-left: 100px;
   margin-right: 100px;
   margin-top: 75px;
+  margin-bottom: 150px;
 }
 
 .jumbotron h1 {
@@ -52,6 +53,10 @@ form {
   margin-top: 50px;
 }
 
+#username-input {
+  margin-bottom: 50px;
+}
+
 input, textarea, select {
   margin-top: 15px;
   color: #000000;
@@ -68,7 +73,6 @@ option {
   margin-left: auto;
   margin-right: auto;
   font-size: 30px;
-  margin-top: 100px;
 }
 
 .jumbotron .btn-success:hover {
@@ -77,7 +81,6 @@ option {
 
 .btn-primary {
   font-size: 30px;
-  margin-top: 100px;
   width: 550px;
   margin-left: 15px;
   margin-right: 15px;
@@ -85,6 +88,7 @@ option {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 50px;
 }
 
 .job-info {

@@ -27,7 +27,7 @@ body {
   color: #FFFFFF;
   padding-left: 200px;
   padding-right: 200px;
-  margin-top: 300px;
+  margin-top: 200px;
   margin-right: 75px;
   margin-left: 75px;
   margin-bottom: 150px;
@@ -63,9 +63,10 @@ h1 {
   width: 625px;
   padding-left: 200px;
   padding-right: 200px;
-  margin-top: 300px;
+  margin-top: 200px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 150px;
 }
 
 .login-jumbotron .btn-success{
