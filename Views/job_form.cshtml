@@ -25,12 +25,12 @@
     {
       <h1>Create a New Job Listing</h1>
       <form class="from-group" action="/jobs" method="post">
-        <h2>Title<input type="text" name="job-title" class="form-control"></h2>
-        <h2>Description<input type="text" name="job-description" class="form-control"></h2>
-        <h2>Salary<input type="text" name="job-salary" class="form-control"></h2>
+        <h2>Title<input required type="text" name="job-title" class="form-control"></h2>
+        <h2>Description<input required type="text" name="job-description" class="form-control"></h2>
+        <h2>Salary<input required type="text" name="job-salary" class="form-control"></h2>
         <div class="row">
           <h2 class="col-xs-6">Company
-            <select name="company" class="form-control">
+            <select required name="company" class="form-control">
               @foreach(var company in Model["allCompanies"])
               {
                 <option value=@company.GetId()>@company.GetName()</option>
@@ -38,7 +38,7 @@
             </select>
           </h2>
           <h2 class="col-xs-6">Category
-            <select name="category" class="form-control">
+            <select required name="category" class="form-control">
               @foreach(var category in Model["allCategories"])
               {
                 <option value=@category.GetId()>@category.GetName()</option>

@@ -24,15 +24,15 @@
     <h1>Create a New Account</h1>
     <form class="form-group" action="/accounts" method="post">
       <div class="row">
-        <h2 class="col-xs-6">First Name<input type="text" name="account-first-name" class="form-control"></h2>
-        <h2 class="col-xs-6">Last Name<input type="text" name="account-last-name" class="form-control"></h2>
+        <h2 class="col-xs-6">First Name<input required type="text" name="account-first-name" class="form-control"></h2>
+        <h2 class="col-xs-6">Last Name<input required type="text" name="account-last-name" class="form-control"></h2>
       </div>
       <div class="row">
-        <h2 class="col-xs-6">Email<input type="text" name="account-email" class="form-control"></h2>
-        <h2 class="col-xs-6">Phone<input type="text" name="account-phone" class="form-control"></h2>
+        <h2 class="col-xs-6">Email<input required type="text" name="account-email" class="form-control"></h2>
+        <h2 class="col-xs-6">Phone<input required type="text" name="account-phone" class="form-control"></h2>
       </div>
       <h2>Education
-        <select class="form-control" name="account-education">
+        <select required class="form-control" name="account-education">
           <option value="1">High School Degree</option>
           <option value="2">Some College</option>
           <option value="3">Associate's Degree</option>
@@ -41,8 +41,8 @@
           <option value="6">Ph.D</option>
         </select>
       </h2>
-      <h2>Resume<textarea rows="5" cols="30" type="text" name="account-resume" class="form-control"></textarea></h2>
-      <h2>Username<input type="text" name="account-username" class="form-control"></h2>
+      <h2>Resume<textarea required rows="5" cols="30" type="text" name="account-resume" class="form-control"></textarea></h2>
+      <h2>Username<input required type="text" name="account-username" class="form-control"></h2>
       <button type="btn" class="btn btn-success">Create Account</button>
     </form>
   </div>

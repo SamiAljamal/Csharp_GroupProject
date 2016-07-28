@@ -24,18 +24,27 @@ namespace JobBoard
         }
       };
       Post ["/accounts"] = _ => {
-        Account newAccount = new Account
-        (
-          Request.Form ["account-first-name"],
-          Request.Form ["account-last-name"],
-          Request.Form ["account-email"],
-          Request.Form ["account-phone"],
-          Request.Form ["account-education"],
-          Request.Form ["account-resume"],
-          Request.Form ["account-username"]
-        );
-        newAccount.Save();
-        return View ["login.cshtml", Account.GetAll()];
+        string newUsername = Request.Form ["account-username"];
+        int userId = Account.FindUserId(newUsername);
+        if(userId==-1)
+        {
+          Account newAccount = new Account
+          (
+            Request.Form ["account-first-name"],
+            Request.Form ["account-last-name"],
+            Request.Form ["account-email"],
+            Request.Form ["account-phone"],
+            Request.Form ["account-education"],
+            Request.Form ["account-resume"],
+            newUsername
+          );
+          newAccount.Save();
+          return View ["login.cshtml", Account.GetAll()];
+        }
+        else
+        {
+            return View["username_taken.cshtml"];
+        }
       };
       Post["/keyword"]=_=>{
         Job newJob = new Job(Request.Form["title"], Request.Form["descrip"], Request.Form["salary"], 1, 1);

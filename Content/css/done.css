@@ -43,3 +43,7 @@ h1 {
   font-size: 40px;
   margin-top: 50px;
 }
+
+#new-account {
+  width: 650px;
+}
