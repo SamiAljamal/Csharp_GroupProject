@@ -42,6 +42,11 @@ body {
   margin-bottom: 100px;
 }
 
+.jumbotron ul {
+  list-style: none;
+  text-align: center;
+}
+
 .h2-headers {
   text-align: center;
   margin-top: 35px;
@@ -102,8 +107,12 @@ option {
   text-align: center;
 }
 
-.search-button {
-  color: #0000EE;
+.keyword-search {
   font-size: 15pt;
   margin-top: 15px;
+  background: rgba(0,0,0,0.25);
+}
+
+#list-names {
+  font-size: 20pt;
 }

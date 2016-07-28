@@ -34,8 +34,8 @@
       </div>
     </nav>
     <div class="jumbotron">
-      <h2>Here are the keywords for @Model["job"].GetTitle()</h2>
-      <h3>Keywords used in this job's category</h3>
+      <h2 class="h2-headers h1-keywords">Top keywords for @Model["job"].GetTitle()</h2>
+      <h2 class="h2-headers">Keywords in job's category</h2>
       <ul>
         @foreach(KeyValuePair<string, int> pair in Model["categoryWords"])
         {
@@ -43,7 +43,7 @@
         }
       </ul>
 
-      <h3 class="h2-headers">Keywords used by this job's company</h3>
+      <h2 class="h2-headers">Keywords in job's company</h2>
       <ul>
         @foreach(string companyWord in Model["companyWords"].Keys)
         {

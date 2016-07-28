@@ -34,7 +34,7 @@
     @foreach (var job in Model.GetJobs())
     {
       <ul>
-        <li><a href="/jobs/@job.GetId()/@job.GetTitle()">@job.GetTitle()</a></li>
+        <li><a href="/jobs/@job.GetId()/@job.GetTitle()" id="list-names">@job.GetTitle()</a></li>
       </ul>
     }
     <h2 class="h2-headers">Update Your Company</h2>
