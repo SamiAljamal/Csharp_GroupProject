@@ -82,7 +82,7 @@ option {
 }
 
 .jumbotron p {
-  margin-left: 50px;
+  text-align: center;
 }
 
 #list-names {

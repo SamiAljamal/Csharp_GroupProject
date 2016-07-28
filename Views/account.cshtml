@@ -30,8 +30,7 @@
   </nav>
   <div class="jumbotron">
     <h1>@Model.GetFirstName() @Model.GetLastName()</h1>
-    <h2 class="h2-headers">Here are all the jobs we recommend for you:</h2>
-    <h2 class="h2-headers">Update Your Information</h2>
+    <h2 class="h2-headers" id="account-update">Update Your Information</h2>
     <!-- Maybe put the update form in a modal? -->
     <form class="from-group" action="/accounts/@Model.GetId()/@Model.GetFirstName()/updated" method="post">
       <input type="hidden" name="_method" value="PATCH">

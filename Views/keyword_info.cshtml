@@ -33,7 +33,7 @@
       </div>
     </nav>
     <div class="jumbotron">
-      <h1 class=H2-headers>@Model["keyword"]</h1>
+      <h1>@Model["keyword"]</h1>
       @{
         double categoryFraction = (double) Model["categoryMatchedJobs"].Count/Model["categoryJobs"].Count;
         double companyFraction = (double) Model["companyMatchedJobs"].Count/Model["companyJobs"].Count;
