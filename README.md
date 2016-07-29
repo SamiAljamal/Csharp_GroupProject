@@ -1,4 +1,4 @@
-# Job Board Webpage
+# Top Candidate Webpage
 
 #### Team Project for Epicodus, 07/29/2016
 
@@ -106,21 +106,41 @@ Have CRUD functionality for an account | --- | ---
 Have CRUD functionality for a job listing | --- | ---
 Have CRUD functionality for a company profile | --- | ---
 Have CRUD functionality for a category of jobs | --- | ---
-View all jobs in a company | --- | ---
-View all jobs in a category | --- | ---
-Allow user to log into their account by a custom username | --- | ---
-View all jobs most suited to an account's resume | --- | ---
-Create a keywords list with the most common words used in a job description | --- | ---
-View a list of top keywords for a job's company | --- | ---
-View a list of top keywords for a job's category | --- | ---
-View all jobs in a company that contain a specific keyword | --- | ---
-View all jobs in a category that contain a specific keyword | --- | ---
+View all jobs in a company | Intel | Jobs: Structural Analyst, Cyber Fusion Analyst, etc...
+View all jobs in a category | Programming | Jobs: C# Programmer, Senior Software Engineer, etc...
+Allow user to log into their account by a custom username | Login: select username, selected "spulla" | "Shradha Pulla"
+View all jobs most suited to an account's resume | Resume: C# programmer | Ranked Jobs: C# Programmer
+View a list of top keywords for a job's company | C# Programmer | Keywords in job's company: .net, supply chain, dtc, etc...
+View a list of top keywords for a job's category | C# Programmer | Keywords in job's category: experience, development, mvs, etc...
 
 ## Future Features
 
 HTML | CSS | C#
 ----- | ----- | -----
---- | --- | ---
+Format site to look more like a job board | Black text on white background | List all keywords for a category & company
+Change update job form to a textarea for the description input | Generate a word cloud for the keywords lists | Implement authentication of an account, add a password option
+Add "Top Candidate" site title to top left of navbar | --- | Refine & refactor algorithm used to generate keywords
+--- | --- | Add an API or other program to generate job listings
+
+## Presentation Notes
+
+- Why?
+	* Job boards present you with a ton of information and can be overwhelming.
+	* Many companies use software that takes a resume and scans it for key words.  These words can be in the actual description.
+	* Our project helps you tailor your resume to make it more appealing to employers, in terms of getting a specific job, applying at a certain company, or within a given industry.
+
+- Process
+	* We rotated every day.
+	* Started every day with a standup to talk about issues we noticed from the previous day, and what we wanted to accomplish in the day ahead.
+	* Each pair worked on different documents and features to prevent merge conflicts and issues with the site not running in the way that the other pair expected.
+	* We kept an eye out for issues and let the team working on that feature know about it rather than going in and fixing it ourselves (divided responsibilities well).
+	* We focused first and foremost on getting a working MVP.  For new features, we decided to set a time limit to see how well we could get it working.  If it didn't work well enough, we moved on.
+
+- Challenges
+	* Coming up with the right algorithm. Frequency of words isn't the best indication of what is a keyword in a resume or job posting.
+	* Maintaining a login session.  Our site doesn't currently do this.
+	* Deciding on the scope of the project.  Wordclouds!  APIs!  Webscrapers!
+	* SQL timeout on tests
 
 ## Support and Contact Details
 
@@ -128,10 +148,12 @@ Contact Epicodus for support in running this program.
 
 ## Technologies Used
 
+* C#
+* Nancy
+* Razor
 * HTML
 * CSS
 * Bootstrap
-* C#
 
 ## Links
 
