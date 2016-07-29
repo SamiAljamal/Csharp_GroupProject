@@ -15,19 +15,16 @@ This program can only be accessed on a PC with Windows 10, and with Git, Atom, a
 * Clone this repository
 * Import the database and test database:
   * Open SSMS
-  * Select the following buttons from the top nav bar to open the database scripts file: File>Open>File>"Desktop\RepositoryName\Sql Databases\job_board.sql"
-  * Save the job_board.sql file
+  * If you want an empty database, use the job_board.sql file. For a database with some sample data, use the job_board_filled.sql file.  These files can be opened by going to to File menu in SSMS, selecting "Open," selecting "File..." and then navigating to the location where you cloned the repository.  The database scripts are located in the "Sql Databases" directory.
   * To create the database: click the "!Execute" button on the top nav bar
-  * To create the database another way, type the following into the top of the sql file:
-    * CREATE DATABASE job_board;
-    * GO
   * Refresh SSMS
-  * Repeat the above steps to import the test database
-* Test the program:
+  * Repeat the above steps to import the test database, called job_board_test.sql.
+* Test the program if desired:
   * Type the following command into PowerShell > dnu restore
   * Next type > dnx test
   * All tests should be passing, if not run dnx test again. Otherwise, fix the errors before launching the program on the browser.
 * View the web page:
+  * Type the following command into PowerShell > dnu restore
   * Type following command into PowerShell > dnx kestrel
   * Open Chrome and type in the following address: localhost:5004
 
